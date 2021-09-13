@@ -1,4 +1,7 @@
 ﻿using Event.Core.Abstract;
+using Event.Core.test;
+using Event.Data.Concrete;
+using Event.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -14,23 +17,30 @@ namespace Event.Core.Concrete
     {
         public readonly DbContext _dbContext;
         public readonly DbSet<TEntity> _dbSet;
+        public readonly IApplicationUser _applicationUser;
 
-        public RepositoryBase(DbContext dbContext)
+        public RepositoryBase(DbContext dbContext, IApplicationUser applicationUser)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<TEntity>();
+            _applicationUser = applicationUser;
         }
         public async Task<TEntity> AddSync(TEntity Entity)
         {
-            EntityEntry result = await _dbSet.AddAsync(Entity);
+            Entities.Concrete.Entity entity = setCreatedBy(Entity);
+
+            EntityEntry result = await _dbSet.AddAsync(entity as TEntity);
             await _dbContext.SaveChangesAsync();
             return result.Entity as TEntity;
 
         }
 
-        public void Delete(TEntity Entity)
+
+
+        public void Delete(TEntity entity)
         {
-            _dbSet.Remove(Entity);
+            Entity deletedEntity = setCreatedByAndDelete(entity);
+            Update(entity as TEntity);
             _dbContext.SaveChanges();
         }
 
@@ -41,29 +51,60 @@ namespace Event.Core.Concrete
             _dbContext.SaveChanges();
         }
 
-        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter)
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
-            return filter == null ? _dbSet : _dbSet.Where(filter);
+            return filter == null ? _dbSet : _dbSet.Where(filter).Where(e => (e as Entity).State != EnumState.Deleted);
         }
 
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter)
         {
-            TEntity entity = await _dbSet.SingleOrDefaultAsync(filter);
+
+            TEntity entity = await _dbSet.FirstOrDefaultAsync(filter);
             await _dbContext.SaveChangesAsync();
             return entity;
         }
 
         public async Task<TEntity> GetByIdAsync(int Id)
         {
+
             TEntity entity = await _dbSet.FindAsync(Id);
             _dbContext.SaveChanges();
             return entity;
         }
 
-        public void Update(TEntity Entity)
+        public void Update(TEntity entity)
         {
-            _dbSet.Update(Entity);
+            var value = setModifiedBy(entity);
+            _dbSet.Update(value as TEntity);
             _dbContext.SaveChanges();
+        }
+
+
+        private Entity setCreatedBy(TEntity entity)
+        {
+            var value = entity as Entity;
+
+            value.CreatedBy = _applicationUser.Id;
+            value.ModifiedAt = new DateTime();
+            return value;
+        }
+
+        private Entity setCreatedByAndDelete(TEntity entity)
+        {
+            var value = entity as Entity;
+            value.CreatedBy = _applicationUser.Id;
+            value.State = EnumState.Deleted;
+            value.ModifiedAt = new DateTime();
+            return value;
+        }
+
+        private Entity setModifiedBy(TEntity entity)
+        {
+            var value = entity as Entity;
+            value.ModifiedBy = _applicationUser.Id;
+            value.State = EnumState.Deleted;
+            value.ModifiedAt = new DateTime();
+            return value;
         }
     }
 }

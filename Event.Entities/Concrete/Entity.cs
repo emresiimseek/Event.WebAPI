@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Event.Data.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,5 +12,6 @@ namespace Event.Entities.Concrete
         public DateTime ModifiedAt { get; set; }
         public int CreatedBy { get; set; }
         public int ModifiedBy { get; set; }
+        public EnumState State { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using Event.Entities.Concrete;
 using Event.Entities.DTOs;
 using Event.WebAPI.Filters;
 using EventApi.Filters.FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,6 +18,8 @@ namespace EventApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class UsersController : ControllerBase
     {
 
@@ -39,6 +42,7 @@ namespace EventApi.Controllers
 
             var addedUser = _autoMapper.MapToSameTpe<User, UserDto>(result);
 
+
             return Created(string.Empty, addedUser);
         }
 
@@ -46,7 +50,24 @@ namespace EventApi.Controllers
         [ServiceFilter(typeof(IsExistFilter<User>))]
         public async Task<IActionResult> GetById(int id)
         {
+
+
             return Ok(_autoMapper.MapToSameTpe<User, UserDto>(await _userService.GetByIdAsync(id)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(_autoMapper.MapToSameList<User, UserDto>(_userService.GetAll().ToList()));
+        }
+
+        [HttpPut("{id}")]
+        [ServiceFilter(typeof(IsExistFilter<User>))]
+
+        public async Task<IActionResult> Update(UserDto userDto, int Id)
+        {
+            _userService.Update(_autoMapper.MapToSameTpe<UserDto, User>(userDto));
+            return NoContent();
         }
 
     }

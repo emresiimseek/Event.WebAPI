@@ -30,6 +30,8 @@ using Event.Entities.DTOs;
 using Event.Business.ValidationRules.FluentValidation;
 using Event.WebAPI.Filters;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using Event.Core.test;
 
 namespace EventApi
 {
@@ -63,6 +65,9 @@ namespace EventApi
             services.AddScoped(typeof(IUserService), typeof(UserService));
             services.AddScoped(typeof(IAutoMapper), typeof(AutoMapperBase));
             services.AddScoped(typeof(IsExistFilter<>));
+            services.AddScoped<IApplicationUser, ApplicationUser>();
+
+
 
             //jwt
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -117,6 +122,7 @@ namespace EventApi
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

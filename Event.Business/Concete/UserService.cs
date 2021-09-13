@@ -56,17 +56,17 @@ namespace Event.Business.Concete
 
         public void Delete(User Entity)
         {
-            throw new NotImplementedException();
+            _userDal.Delete(Entity);
         }
 
         public void DeleteById(object EntityId)
         {
-            throw new NotImplementedException();
+            _userDal.DeleteById(EntityId);
         }
 
         public IEnumerable<User> GetAll()
         {
-            throw new NotImplementedException();
+            return _userDal.GetAll();
         }
 
         public Task<User> GetAsync()
@@ -81,7 +81,7 @@ namespace Event.Business.Concete
 
         public void Update(User Entity)
         {
-            throw new NotImplementedException();
+            _userDal.Update(Entity);
         }
 
         public string Encrypt(string text)

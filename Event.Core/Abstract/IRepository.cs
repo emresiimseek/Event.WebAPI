@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Event.Core.Abstract
 {
-   public interface IRepository<TEntity>
+    public interface IRepository<TEntity>
     {
         Task<TEntity> AddSync(TEntity Entity);
         void Update(TEntity Entity);
@@ -14,6 +14,6 @@ namespace Event.Core.Abstract
         void DeleteById(object EntityId);
         Task<TEntity> GetByIdAsync(int Id);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter);
-        IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter);
+        IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null);
     }
 }
