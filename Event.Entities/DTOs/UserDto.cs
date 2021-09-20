@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Event.Entities.DTOs
 {
-    public class UserDto
+    public class UserDto : IDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -14,5 +14,7 @@ namespace Event.Entities.DTOs
         public DateTime BirthDate { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public string Email { get; set; }
+        public string Token { get; set; }
     }
 }

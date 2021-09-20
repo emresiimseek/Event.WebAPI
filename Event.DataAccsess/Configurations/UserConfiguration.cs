@@ -20,6 +20,8 @@ namespace Event.DataAccsess.Configurations
             builder.Property(u => u.Gender).IsRequired();
             builder.Property(u => u.Password).HasMaxLength(100).IsRequired();
             builder.Property(u => u.UserName).IsRequired().HasMaxLength(100);
+            builder.Property(u => u.Email).IsRequired().HasMaxLength(100);
+
         }
     }
 }

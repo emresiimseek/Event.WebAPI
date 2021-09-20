@@ -1,4 +1,5 @@
 ﻿using Event.Business.Abstract;
+using Event.Entities.Abstract;
 using Event.Entities.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Event.WebAPI.Filters
 {
-    public class IsExistFilter<T> : IAsyncActionFilter
+    public class IsExistFilter<T> : IAsyncActionFilter where T : class, IEntity, new()
     {
         public IService<T> _service { get; set; }
         public IsExistFilter(IService<T> service)

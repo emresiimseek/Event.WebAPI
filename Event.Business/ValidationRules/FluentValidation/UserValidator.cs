@@ -15,6 +15,7 @@ namespace Event.Business.ValidationRules.FluentValidation
             RuleFor(u => u.UserName).NotNull().MinimumLength(8);
             RuleFor(u => u.Password).NotNull().MinimumLength(8);
             RuleFor(u => u.FirstName).NotNull();
+            RuleFor(u => u.Email).NotNull().MaximumLength(100);
         }
     }
 }
