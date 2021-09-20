@@ -1,5 +1,5 @@
 ﻿using Event.Core.Abstract;
-using Event.Core.test;
+using Event.Core.Helpers;
 using Event.Data.Concrete;
 using Event.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +15,9 @@ namespace Event.Core.Concrete
 {
     public class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class, new()
     {
-        public readonly DbContext _dbContext;
-        public readonly DbSet<TEntity> _dbSet;
-        public readonly IApplicationUser _applicationUser;
+        private readonly DbContext _dbContext;
+        private readonly DbSet<TEntity> _dbSet;
+        private readonly IApplicationUser _applicationUser;
 
         public RepositoryBase(DbContext dbContext, IApplicationUser applicationUser)
         {
@@ -25,6 +25,7 @@ namespace Event.Core.Concrete
             _dbSet = dbContext.Set<TEntity>();
             _applicationUser = applicationUser;
         }
+
         public async Task<TEntity> AddSync(TEntity Entity)
         {
             Entities.Concrete.Entity entity = setCreatedBy(Entity);
@@ -34,8 +35,6 @@ namespace Event.Core.Concrete
             return result.Entity as TEntity;
 
         }
-
-
 
         public void Delete(TEntity entity)
         {
@@ -53,15 +52,14 @@ namespace Event.Core.Concrete
 
         public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
+
             return filter == null ? _dbSet : _dbSet.Where(filter).Where(e => (e as Entity).State != EnumState.Deleted);
         }
 
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter)
         {
-
-            TEntity entity = await _dbSet.FirstOrDefaultAsync(filter);
-            await _dbContext.SaveChangesAsync();
-            return entity;
+            var result = await _dbSet.FirstOrDefaultAsync(filter);
+            return result;
         }
 
         public async Task<TEntity> GetByIdAsync(int Id)
@@ -85,7 +83,7 @@ namespace Event.Core.Concrete
             var value = entity as Entity;
 
             value.CreatedBy = _applicationUser.Id;
-            value.ModifiedAt = new DateTime();
+            value.CreatedAt = new DateTime();
             return value;
         }
 

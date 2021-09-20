@@ -15,7 +15,7 @@ namespace Event.Core.Utilities.Mapper
             ;
         }
 
-        public TDest MapToSameTpe<TSource, TDest>(TSource obj) where TSource : new()
+        public TDest MapToSameType<TSource, TDest>(TSource obj)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<TSource, TDest>());
             IMapper mapper = config.CreateMapper();

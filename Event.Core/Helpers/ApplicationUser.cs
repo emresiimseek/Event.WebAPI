@@ -5,24 +5,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Event.Core.test
+namespace Event.Core.Helpers
 {
     public class ApplicationUser : IApplicationUser
     {
 
-        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public ApplicationUser(IHttpContextAccessor httpContextAccessor)
         {
-            this.httpContextAccessor = httpContextAccessor;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
         public int GetUserId()
         {
 
-            var subject = this.httpContextAccessor.HttpContext
+            var subject = this._httpContextAccessor.HttpContext
                             .User.Identities.First().Claims
                             .FirstOrDefault();
+
+            if (subject==null) return 0;
 
             return Int32.Parse(subject.Value);
         }

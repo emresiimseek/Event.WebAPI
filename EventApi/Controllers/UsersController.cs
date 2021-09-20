@@ -2,6 +2,7 @@
 using Event.Core.Utilities.Mapper;
 using Event.DataAccsess;
 using Event.DataAccsess.Abstract;
+using Event.Entities;
 using Event.Entities.Concrete;
 using Event.Entities.DTOs;
 using Event.WebAPI.Filters;
@@ -18,13 +19,13 @@ namespace EventApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
 
     public class UsersController : ControllerBase
     {
 
-        public IUserService _userService { get; set; }
-        public IAutoMapper _autoMapper { get; set; }
+        private IUserService _userService { get; set; }
+        private IAutoMapper _autoMapper { get; set; }
 
         public UsersController(IUserService userService, IAutoMapper autoMapper)
         {
@@ -36,29 +37,27 @@ namespace EventApi.Controllers
         [ValidationFilter]
         public async Task<IActionResult> Save(UserDto userDto)
         {
-            var user = _autoMapper.MapToSameTpe<UserDto, User>(userDto);
-
+            var user = _autoMapper.MapToSameType<UserDto, User>(userDto);
             var result = await _userService.AddAsync(user);
+            var addedUser = _autoMapper.MapToSameType<IServiceResponseModel<User>, IServiceResponseDto<UserDto>>(result);
 
-            var addedUser = _autoMapper.MapToSameTpe<User, UserDto>(result);
-
-
-            return Created(string.Empty, addedUser);
+            return Created(string.Empty, result);
         }
 
         [HttpGet("{id}")]
         [ServiceFilter(typeof(IsExistFilter<User>))]
         public async Task<IActionResult> GetById(int id)
         {
+            var result = await _userService.GetByIdAsync(id);
 
-
-            return Ok(_autoMapper.MapToSameTpe<User, UserDto>(await _userService.GetByIdAsync(id)));
+            return Ok(_autoMapper.MapToSameList<User, UserDto>(result.Model));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(_autoMapper.MapToSameList<User, UserDto>(_userService.GetAll().ToList()));
+            var result = await _userService.GetAll();
+            return Ok(_autoMapper.MapToSameList<User, UserDto>(result.Model));
         }
 
         [HttpPut("{id}")]
@@ -66,7 +65,9 @@ namespace EventApi.Controllers
 
         public async Task<IActionResult> Update(UserDto userDto, int Id)
         {
-            _userService.Update(_autoMapper.MapToSameTpe<UserDto, User>(userDto));
+            _userService.Update(_autoMapper.MapToSameType<UserDto, User>(userDto));
+
+
             return NoContent();
         }
 

@@ -2,6 +2,7 @@
 using Event.Data;
 using Event.DataAccsess.Abstract;
 using Event.Entities.Concrete;
+using Event.Entities.DTOs;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -11,15 +12,17 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
+using Event.Entities;
 
 namespace Event.Business.Concete
 {
     public class UserService : IUserService
     {
 
-        public static string key { get; set; } = "A!9HHhi%XjjYY4YP2@Nob009X";
+        private static string key { get; set; } = "A!9HHhi%XjjYY4YP2@Nob009X";
         private readonly AppSettings _appSettings;
-        public IUserDal _userDal { get; set; }
+        private IUserDal _userDal { get; set; }
 
         public UserService(IUserDal userDal, IOptions<AppSettings> appSettings)
         {
@@ -27,17 +30,44 @@ namespace Event.Business.Concete
             this._appSettings = appSettings.Value;
         }
 
-        public async Task<User> AddAsync(User Entity)
+        public async Task<Entities.IServiceResponseModel<User>> AddAsync(User Entity)
         {
+            ServiceResponseModel<User> response = new ServiceResponseModel<User>();
+
+            var user = await _userDal.GetAsync(u => u.UserName == Entity.UserName || u.Email == Entity.Email);
+
+            if (user != null)
+            {
+                ErrorDto errorDto = new ErrorDto();
+                errorDto.Errors.Add("hata güzelim");
+                errorDto.StatusCode = 400;
+                response.Errors.Add(errorDto);
+                return response;
+
+            }
+
             Entity.Password = Encrypt(Entity.Password);
-            return await _userDal.AddSync(Entity) as User;
+            var result = await _userDal.AddSync(Entity) as User;
+
+            response.Model.Add(result);
+
+            return response;
+
         }
 
-        public async Task<User> Authenticate(string username, string password)
+        public async Task<ServiceResponseModel<User>> Authenticate(string username, string password)
         {
+
+            ServiceResponseModel<User> response = new ServiceResponseModel<User>();
+
             var result = await _userDal.GetAsync(p => p.UserName == username && p.Password == Encrypt(password));
             if (result == null)
-                return null;
+            {
+                response.Errors.Add(new ErrorDto { StatusCode = 100, Errors = new List<string> { "Kullanıcı Adı veya Şifre uyuşmamaktadır" } });
+
+                return response;
+
+            }
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -51,7 +81,10 @@ namespace Event.Business.Concete
             var token = tokenHandler.CreateToken(tokenDescriptor);
             result.Token = tokenHandler.WriteToken(token);
             result.Password = null;
-            return result;
+
+            response.Model.Add(result);
+
+            return response;
         }
 
         public void Delete(User Entity)
@@ -64,9 +97,16 @@ namespace Event.Business.Concete
             _userDal.DeleteById(EntityId);
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<Entities.IServiceResponseModel<User>> GetAll()
         {
-            return _userDal.GetAll();
+            ServiceResponseModel<User> response = new ServiceResponseModel<User>();
+
+            var data = _userDal.GetAll().ToList();
+
+            response.Model = data;
+
+
+            return response;
         }
 
         public Task<User> GetAsync()
@@ -74,9 +114,16 @@ namespace Event.Business.Concete
             throw new NotImplementedException();
         }
 
-        public Task<User> GetByIdAsync(int id)
+
+
+        public async Task<Entities.IServiceResponseModel<User>> GetByIdAsync(int id)
         {
-            return _userDal.GetByIdAsync(id);
+            ServiceResponseModel<User> response = new ServiceResponseModel<User>();
+
+            var result = await _userDal.GetByIdAsync(id);
+            response.Model.Add(result);
+
+            return response;
         }
 
         public void Update(User Entity)
@@ -122,5 +169,7 @@ namespace Event.Business.Concete
                 }
             }
         }
+
+
     }
 }

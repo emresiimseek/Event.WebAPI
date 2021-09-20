@@ -1,5 +1,6 @@
 ﻿using Event.Business.Abstract;
 using Event.Core.Utilities.Mapper;
+using Event.Entities;
 using Event.Entities.Concrete;
 using Event.Entities.DTOs;
 using EventApi.Filters.FluentValidation;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EventApi.Controllers
@@ -16,8 +18,8 @@ namespace EventApi.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        public IAutoMapper _autoMapper { get; set; }
-        public IUserService _userService { get; set; }
+        private IAutoMapper _autoMapper { get; set; }
+        private IUserService _userService { get; set; }
 
         public AuthenticationController(IAutoMapper autoMapper, IUserService userService)
         {
@@ -31,7 +33,10 @@ namespace EventApi.Controllers
         {
             var result = await _userService.Authenticate(userDto.UserName, userDto.Password);
 
-            return Ok(_autoMapper.MapToSameTpe<User, UserAuthenticationDto>(result));
+            var data = _autoMapper.MapToSameList<User, UserAuthenticationDto>(result.Model);
+
+            var responseDto = new ServiceResponseDto<UserAuthenticationDto> { Errors = result.Errors, Model = data };
+            return Ok(responseDto);
 
         }
 

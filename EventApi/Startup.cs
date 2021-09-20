@@ -31,7 +31,7 @@ using Event.Business.ValidationRules.FluentValidation;
 using Event.WebAPI.Filters;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
-using Event.Core.test;
+using Event.Core.Helpers;
 
 namespace EventApi
 {
@@ -117,6 +117,14 @@ namespace EventApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyOrigin();
+                builder.AllowAnyMethod();
+                builder.AllowAnyHeader();
+            });
+
 
             app.UseHttpsRedirection();
 
