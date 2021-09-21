@@ -32,6 +32,8 @@ using Event.WebAPI.Filters;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Event.Core.Helpers;
+using Event.Entities;
+using Event.DataAccsess.Concrete;
 
 namespace EventApi
 {
@@ -49,6 +51,9 @@ namespace EventApi
         {
             services.AddControllers();
 
+            services.AddControllers().AddNewtonsoftJson(option =>
+ option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddDbContextPool<EventContext>(options =>
             {
                 options.UseMySQL(Configuration.GetConnectionString("MySqlConStr"), o => { o.MigrationsAssembly("Event.DataAccsess"); });
@@ -57,7 +62,6 @@ namespace EventApi
 
 
             //DI Configurations
-
             services.AddScoped(typeof(IRepository<>), typeof(RepositoryBase<>));
             services.AddScoped<DbContext, EventContext>();
             services.AddScoped(typeof(IUserDal), typeof(UserDal));
@@ -66,6 +70,9 @@ namespace EventApi
             services.AddScoped(typeof(IAutoMapper), typeof(AutoMapperBase));
             services.AddScoped(typeof(IsExistFilter<>));
             services.AddScoped<IApplicationUser, ApplicationUser>();
+            services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IEventDal, EventDal>();
+            services.AddScoped<IServiceResponseModel<Event.Entities.Concrete.Event>, ServiceResponseModel<Event.Entities.Concrete.Event>>();
 
 
 
@@ -77,6 +84,8 @@ namespace EventApi
 
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+
 
             services.AddAuthentication(x =>
             {
