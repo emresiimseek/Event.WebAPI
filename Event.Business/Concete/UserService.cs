@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Event.Entities;
+using System.Linq.Expressions;
 
 namespace Event.Business.Concete
 {
@@ -109,9 +110,13 @@ namespace Event.Business.Concete
             return response;
         }
 
-        public Task<User> GetAsync()
+        public async Task<ServiceResponseModel<User>> GetAsync(Expression<Func<User, bool>> filter = null)
         {
-            throw new NotImplementedException();
+            ServiceResponseModel<User> response = new ServiceResponseModel<User>();
+
+            var user = await _userDal.GetAsync(filter);
+            response.Model.Add(user);
+            return response;
         }
 
 
