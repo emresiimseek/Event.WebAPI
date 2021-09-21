@@ -4,11 +4,12 @@ using System.Text;
 
 namespace Event.Entities.Concrete
 {
-    public class UsersRole : Entity
+    public class UsersEvent
     {
         public virtual User User { get; set; }
-        public virtual Role Role { get; set; }
+        public virtual Event Event { get; set; }
         public int UserId { get; set; }
-        public int RoleId { get; set; }
+        public int EventId { get; set; }
+
     }
 }
