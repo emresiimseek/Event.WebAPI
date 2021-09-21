@@ -3,6 +3,7 @@ using Event.Entities.Abstract;
 using Event.Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace Event.Business.Abstract
         public abstract void Delete(TEntity Entity);
         public abstract void DeleteById(object EntityId);
         public Task<Entities.IServiceResponseModel<TEntity>> GetByIdAsync(int id);
-        public abstract Task<TEntity> GetAsync();
+        public abstract Task<ServiceResponseModel<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter = null);
         public abstract Task<Entities.IServiceResponseModel<TEntity>> GetAll();
     }
 }

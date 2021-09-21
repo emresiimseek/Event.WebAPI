@@ -4,23 +4,10 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace Event.DataAccsess.Migrations
 {
-    public partial class migration3 : Migration
+    public partial class init1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_User",
-                table: "User");
-
-            migrationBuilder.RenameTable(
-                name: "User",
-                newName: "Users");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Users",
-                table: "Users",
-                column: "Id");
-
             migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
@@ -31,11 +18,37 @@ namespace Event.DataAccsess.Migrations
                     ModifiedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<int>(nullable: false),
                     ModifiedBy = table.Column<int>(nullable: false),
+                    State = table.Column<int>(nullable: false),
                     RoleName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    ModifiedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<int>(nullable: false),
+                    ModifiedBy = table.Column<int>(nullable: false),
+                    State = table.Column<int>(nullable: false),
+                    FirstName = table.Column<string>(maxLength: 200, nullable: false),
+                    LastName = table.Column<string>(maxLength: 200, nullable: false),
+                    Gender = table.Column<string>(nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Password = table.Column<string>(maxLength: 100, nullable: false),
+                    Token = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(maxLength: 100, nullable: false),
+                    Email = table.Column<string>(maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,6 +61,7 @@ namespace Event.DataAccsess.Migrations
                     ModifiedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<int>(nullable: false),
                     ModifiedBy = table.Column<int>(nullable: false),
+                    State = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: true),
                     RoleId = table.Column<int>(nullable: true)
                 },
@@ -87,18 +101,8 @@ namespace Event.DataAccsess.Migrations
             migrationBuilder.DropTable(
                 name: "Roles");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Users",
-                table: "Users");
-
-            migrationBuilder.RenameTable(
-                name: "Users",
-                newName: "User");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_User",
-                table: "User",
-                column: "Id");
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

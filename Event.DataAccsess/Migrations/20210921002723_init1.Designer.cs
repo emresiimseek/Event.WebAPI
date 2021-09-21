@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Event.DataAccsess.Migrations
 {
     [DbContext(typeof(EventContext))]
-    [Migration("20210919172432_init10")]
-    partial class init10
+    [Migration("20210921002723_init1")]
+    partial class init1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,6 +65,11 @@ namespace Event.DataAccsess.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("varchar(200)")
@@ -100,9 +105,6 @@ namespace Event.DataAccsess.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(100)")
                         .HasMaxLength(100);
-
-                    b.Property<string>("email")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

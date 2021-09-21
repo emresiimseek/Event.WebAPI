@@ -63,6 +63,11 @@ namespace Event.DataAccsess.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("varchar(200)")
@@ -98,9 +103,6 @@ namespace Event.DataAccsess.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(100)")
                         .HasMaxLength(100);
-
-                    b.Property<string>("email")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
