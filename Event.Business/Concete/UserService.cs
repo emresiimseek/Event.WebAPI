@@ -98,17 +98,7 @@ namespace Event.Business.Concete
             _userDal.DeleteById(EntityId);
         }
 
-        public async Task<Entities.IServiceResponseModel<User>> GetAll()
-        {
-            ServiceResponseModel<User> response = new ServiceResponseModel<User>();
 
-            var data = _userDal.GetAll().ToList();
-
-            response.Model = data;
-
-
-            return response;
-        }
 
         public async Task<ServiceResponseModel<User>> GetAsync(Expression<Func<User, bool>> filter = null)
         {
@@ -175,6 +165,16 @@ namespace Event.Business.Concete
             }
         }
 
+        public async Task<IServiceResponseModel<User>> GetAll(Expression<Func<User, bool>> filter = null)
+        {
+            ServiceResponseModel<User> response = new ServiceResponseModel<User>();
 
+            var data = _userDal.GetAll(filter).ToList();
+
+            response.Model = data;
+
+
+            return response;
+        }
     }
 }

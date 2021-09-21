@@ -17,6 +17,6 @@ namespace Event.Business.Abstract
         public abstract void DeleteById(object EntityId);
         public Task<Entities.IServiceResponseModel<TEntity>> GetByIdAsync(int id);
         public abstract Task<ServiceResponseModel<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter = null);
-        public abstract Task<Entities.IServiceResponseModel<TEntity>> GetAll();
+        public abstract Task<Entities.IServiceResponseModel<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter = null);
     }
 }
