@@ -1,5 +1,5 @@
 ﻿using Event.Business.Abstract;
-using Event.Entities.Abstract;
+using Event.Data.Datas.Abstract;
 using Event.Entities.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

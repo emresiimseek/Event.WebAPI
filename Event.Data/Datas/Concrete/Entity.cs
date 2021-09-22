@@ -1,12 +1,13 @@
 ﻿using Event.Data.Concrete;
-using Event.Entities.Abstract;
+using Event.Data.Datas.Abstract;
+using Event.Data.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Event.Entities.Concrete
+namespace Event.Data.Datas.Concrete
 {
-    public class Entity: IEntity
+    public class Entity : IEntity
     {
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; }
