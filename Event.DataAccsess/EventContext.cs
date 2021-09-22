@@ -16,9 +16,9 @@ namespace Event.DataAccsess
         {
         }
 
-        public DbSet<Users_Role> UsersRoles { get; set; }
+        public DbSet<User_Role> UsersRoles { get; set; }
         public DbSet<User_Activity> UsersEvents { get; set; }
-        public DbSet<Activitys_Category> ActivitysCategories { get; set; }
+        public DbSet<Activity_Category> ActivitysCategories { get; set; }
 
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -30,7 +30,7 @@ namespace Event.DataAccsess
         {
             modelBuilder.Entity<User_Activity>().HasKey(UsersEvent => new { UsersEvent.ActivityId, UsersEvent.UserId });
 
-            modelBuilder.Entity<Activitys_Category>().HasKey(EventsCategory => new { EventsCategory.CategoryId, EventsCategory.ActivityId });
+            modelBuilder.Entity<Activity_Category>().HasKey(EventsCategory => new { EventsCategory.CategoryId, EventsCategory.ActivityId });
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new EventConfiguration());

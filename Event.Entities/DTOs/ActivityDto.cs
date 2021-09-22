@@ -10,8 +10,8 @@ namespace Event.Entities.DTOs
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime EventDate { get; set; }
-        public List<User_Activity> ActivitysEvents { get; set; }
-        public List<Activitys_Category> ActivitysCategory { get; set; }
+        public List<User_Activity> UserActivities { get; set; }
+        public List<Activity_Category> ActivityCategories { get; set; }
 
     }
 }

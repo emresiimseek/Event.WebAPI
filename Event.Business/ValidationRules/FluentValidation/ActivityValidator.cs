@@ -10,10 +10,13 @@ namespace Event.Business.ValidationRules.FluentValidation
     {
         public ActivityValidator()
         {
-            RuleFor(u => u.Title).NotNull().NotEmpty();
-            RuleFor(u => u.Description).NotNull();
+
+            
+
+            RuleFor(u => u.Title).NotNull().NotEmpty().MinimumLength(5);
+            RuleFor(u => u.Description).NotNull().MinimumLength(5);
             RuleFor(u => u.EventDate).NotEmpty();
-            RuleFor(u => u.ActivitysEvents).NotEmpty();
+            RuleFor(u => u.ActivityCategories).NotEmpty();
         }
     }
 }
