@@ -8,7 +8,7 @@ namespace Event.Entities.Concrete
     public class Category : Entity
     {
         public string Title { get; set; }
-        public List<Activitys_Category> ActivitysCategories { get; set; }
+        public List<Activity_Category> ActivityCategories { get; set; }
 
     }
 }

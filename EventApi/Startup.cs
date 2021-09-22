@@ -1,39 +1,30 @@
+using Event.Business.Abstract;
+using Event.Business.Concete;
+using Event.Business.ValidationRules.FluentValidation;
+using Event.Core.Abstract;
+using Event.Core.Concrete;
+using Event.Core.Helpers;
+using Event.Core.Utilities.Mapper;
+using Event.Data;
 using Event.DataAccsess;
+using Event.DataAccsess.Abstract;
+using Event.DataAccsess.Concrete;
+using Event.Entities;
+using Event.Entities.Concrete;
+using Event.Entities.DTOs;
+using Event.WebAPI.Filters;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MySql.Data.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Event.Core.Abstract;
-using Event.Core.Concrete;
-using Event.DataAccsess.Abstract;
-using Event.Data;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Event.Business.Abstract;
-using Event.Entities.Concrete;
-using Event.Core.Utilities.Mapper;
-using Event.Business.Concete;
-using FluentValidation.AspNetCore;
-using FluentValidation;
-using Event.Entities.DTOs;
-using Event.Business.ValidationRules.FluentValidation;
-using Event.WebAPI.Filters;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
-using Event.Core.Helpers;
-using Event.Entities;
-using Event.DataAccsess.Concrete;
+using System.Globalization;
+using System.Text;
 
 namespace EventApi
 {
@@ -60,7 +51,6 @@ namespace EventApi
             });
 
 
-
             //DI Configurations
             services.AddScoped(typeof(IRepository<>), typeof(RepositoryBase<>));
             services.AddScoped<DbContext, EventContext>();
@@ -70,8 +60,6 @@ namespace EventApi
             services.AddScoped(typeof(IAutoMapper), typeof(AutoMapperBase));
             services.AddScoped(typeof(IsExistFilter<>));
             services.AddScoped<IApplicationUser, ApplicationUser>();
-
-
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IEventDal, EventDal>();
             services.AddScoped<IServiceResponseModel<Activity>, ServiceResponseModel<Activity>>();
@@ -116,18 +104,17 @@ namespace EventApi
             });
 
             //fluent validation
-
             services.AddMvc(setup =>
             {
                 //...mvc setup...
             }).AddFluentValidation();
 
+            //fluent validation language
+            ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("tr");
+
+            //validators
             services.AddTransient<IValidator<UserDto>, UserValidator>();
             services.AddTransient<IValidator<ActivityDto>, ActivityValidator>();
-
-
-            //idendity
-
 
         }
 
@@ -146,18 +133,15 @@ namespace EventApi
                 builder.AllowAnyHeader();
             });
 
-
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            
         }
     }
 }

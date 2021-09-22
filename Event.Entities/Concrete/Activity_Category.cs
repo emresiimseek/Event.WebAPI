@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Event.Entities.Concrete
 {
-    public class Activitys_Category : Entity
+    public class Activity_Category : Entity
     {
         public virtual Activity Activity { get; set; }
         public virtual Category Category { get; set; }
