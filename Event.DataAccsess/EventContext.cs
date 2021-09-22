@@ -16,9 +16,11 @@ namespace Event.DataAccsess
         {
         }
 
-        public DbSet<UsersRole> UsersRoles { get; set; }
-        public DbSet<Event.Entities.Concrete.Event> Events { get; set; }
-        public DbSet<UsersEvent> UsersEvents { get; set; }
+        public DbSet<Users_Role> UsersRoles { get; set; }
+        public DbSet<User_Activity> UsersEvents { get; set; }
+        public DbSet<Activitys_Category> ActivitysCategories { get; set; }
+
+        public DbSet<Activity> Activities { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<User> Users { get; set; }
@@ -26,10 +28,13 @@ namespace Event.DataAccsess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UsersEvent>().HasKey(UsersEvent => new { UsersEvent.EventId, UsersEvent.UserId });
+            modelBuilder.Entity<User_Activity>().HasKey(UsersEvent => new { UsersEvent.ActivityId, UsersEvent.UserId });
+
+            modelBuilder.Entity<Activitys_Category>().HasKey(EventsCategory => new { EventsCategory.CategoryId, EventsCategory.ActivityId });
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new EventConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         }
 
     }

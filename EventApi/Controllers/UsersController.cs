@@ -1,4 +1,5 @@
 ﻿using Event.Business.Abstract;
+using Event.Business.Concete;
 using Event.Core.Utilities.Mapper;
 using Event.DataAccsess;
 using Event.DataAccsess.Abstract;
@@ -66,8 +67,6 @@ namespace EventApi.Controllers
         public async Task<IActionResult> Update(UserDto userDto, int Id)
         {
             _userService.Update(_autoMapper.MapToSameType<UserDto, User>(userDto));
-
-
             return NoContent();
         }
 

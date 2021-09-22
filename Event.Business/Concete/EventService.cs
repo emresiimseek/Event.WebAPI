@@ -1,6 +1,7 @@
 ﻿using Event.Business.Abstract;
 using Event.DataAccsess.Abstract;
 using Event.Entities;
+using Event.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,23 +14,23 @@ namespace Event.Business.Concete
     public class EventService : IEventService
     {
 
-        public IEventDal _eventDal { get; set; }
-        public IServiceResponseModel<Event.Entities.Concrete.Event> _serviceResponseModel { get; set; }
+        private IEventDal _eventDal { get; set; }
+        private IServiceResponseModel<Activity> _serviceResponseModel { get; set; }
 
-        public EventService(IEventDal eventDal, IServiceResponseModel<Event.Entities.Concrete.Event> serviceResponseModel)
+        public EventService(IEventDal eventDal, IServiceResponseModel<Activity> serviceResponseModel)
         {
             _eventDal = eventDal;
             _serviceResponseModel = serviceResponseModel;
         }
 
-        public async Task<IServiceResponseModel<Entities.Concrete.Event>> AddAsync(Entities.Concrete.Event Entity)
+        public async Task<IServiceResponseModel<Activity>> AddAsync(Activity Entity)
         {
             var result = await _eventDal.AddSync(Entity);
             _serviceResponseModel.Model.Add(result);
             return _serviceResponseModel;
         }
 
-        public void Delete(Entities.Concrete.Event Entity)
+        public void Delete(Activity Entity)
         {
             _eventDal.Delete(Entity);
         }
@@ -39,7 +40,7 @@ namespace Event.Business.Concete
             _eventDal.DeleteById(EntityId);
         }
 
-        public async Task<IServiceResponseModel<Entities.Concrete.Event>> GetAll(Expression<Func<Event.Entities.Concrete.Event, bool>> filter = null)
+        public async Task<IServiceResponseModel<Activity>> GetAll(Expression<Func<Activity, bool>> filter = null)
         {
             var result = _eventDal.GetAll(filter).ToList();
             _serviceResponseModel.Model = result;
@@ -48,14 +49,14 @@ namespace Event.Business.Concete
 
         }
 
-        public async Task<ServiceResponseModel<Entities.Concrete.Event>> GetAsync(Expression<Func<Entities.Concrete.Event, bool>> filter = null)
+        public async Task<ServiceResponseModel<Activity>> GetAsync(Expression<Func<Activity, bool>> filter = null)
         {
             var result = await _eventDal.GetAsync(filter);
             _serviceResponseModel.Model.Add(result);
-            return (ServiceResponseModel<Entities.Concrete.Event>)_serviceResponseModel;
+            return (ServiceResponseModel<Activity>)_serviceResponseModel;
         }
 
-        public async Task<IServiceResponseModel<Entities.Concrete.Event>> GetByIdAsync(int id)
+        public async Task<IServiceResponseModel<Activity>> GetByIdAsync(int id)
         {
             var result = await _eventDal.GetByIdAsync(id);
 
@@ -64,7 +65,7 @@ namespace Event.Business.Concete
             return _serviceResponseModel;
         }
 
-        public void Update(Entities.Concrete.Event Entity)
+        public void Update(Activity Entity)
         {
             _eventDal.Update(Entity);
 

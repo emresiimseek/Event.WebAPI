@@ -7,16 +7,14 @@ using System.Text;
 
 namespace Event.DataAccsess.Configurations
 {
-    class EventConfiguration : IEntityTypeConfiguration<Activity>
+    class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
 
-        public void Configure(EntityTypeBuilder<Activity> builder)
+        public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id).UseMySqlIdentityColumn();
             builder.Property(e => e.Title).HasMaxLength(100).IsRequired();
-            builder.Property(e => e.Description).HasMaxLength(250).IsRequired();
-            builder.Property(e => e.EventDate).HasColumnType("datetime").IsRequired();
 
 
 
