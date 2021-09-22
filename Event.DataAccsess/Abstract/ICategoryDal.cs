@@ -6,7 +6,8 @@ using System.Text;
 
 namespace Event.DataAccsess.Abstract
 {
-    public interface IEventDal : IRepository<Activity>
+    public interface ICategoryDal:IRepository<Category>
     {
+
     }
 }

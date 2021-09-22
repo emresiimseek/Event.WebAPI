@@ -8,11 +8,11 @@ using System.Text;
 
 namespace Event.DataAccsess.Concrete
 {
-    public class EventDal : RepositoryBase<Activity>, IEventDal
+    public class CategoryDal : RepositoryBase<Category>, ICategoryDal
     {
-        public EventDal(EventContext context, IApplicationUser applicationUser) : base(context, applicationUser)
+        public CategoryDal(EventContext context, IApplicationUser applicationUser) : base(context, applicationUser)
         {
-        }
 
+        }
     }
 }

@@ -8,6 +8,6 @@ namespace Event.Entities.Concrete
     public class Role : Entity
     {
         public string RoleName { get; set; }
-        public virtual List<UsersRole> UsersRoles { get; set; }
+        public virtual List<Users_Role> UsersRoles { get; set; }
     }
 }

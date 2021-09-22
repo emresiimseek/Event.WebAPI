@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace Event.Core.Concrete
 
         public async Task<TEntity> AddSync(TEntity Entity)
         {
-          Entity entity = setCreatedBy(Entity);
+            Entity entity = setCreatedBy(Entity);
 
             EntityEntry result = await _dbSet.AddAsync(entity as TEntity);
             await _dbContext.SaveChangesAsync();
@@ -55,6 +56,9 @@ namespace Event.Core.Concrete
         public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
 
+            var result = typeof(TEntity).Assembly;
+            var result2 = nameof(TEntity);
+
             return filter == null ? _dbSet : _dbSet.Where(filter).Where(e => (e as Entity).State != EnumState.Deleted);
         }
 
@@ -75,6 +79,9 @@ namespace Event.Core.Concrete
         public void Update(TEntity entity)
         {
             var value = setModifiedBy(entity);
+
+            var result = typeof(TEntity).Assembly;
+
             _dbSet.Update(value as TEntity);
             _dbContext.SaveChanges();
         }

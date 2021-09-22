@@ -1,6 +1,7 @@
 ﻿using Event.Data.Datas.Abstract;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Event.Data.Datas.Concrete
@@ -9,5 +10,6 @@ namespace Event.Data.Datas.Concrete
     {
         public String Type { get; set; }
         public String Name { get; set; }
+      
     }
 }

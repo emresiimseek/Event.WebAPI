@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Event.Business.Abstract
 {
-    public interface IEventService : IService<Activity>
+    public interface ICategoryService:IService<Category>
     {
+
     }
 }

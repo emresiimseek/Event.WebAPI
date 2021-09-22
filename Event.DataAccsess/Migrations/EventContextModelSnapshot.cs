@@ -18,80 +18,7 @@ namespace Event.DataAccsess.Migrations
                 .HasAnnotation("ProductVersion", "3.1.18")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Event.Entities.Concrete.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("ModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Event.Entities.Concrete.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("ModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Event.Entities.Concrete.Event", b =>
+            modelBuilder.Entity("Event.Entities.Concrete.Activity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,7 +55,116 @@ namespace Event.DataAccsess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Activities");
+                });
+
+            modelBuilder.Entity("Event.Entities.Concrete.Activitys_Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ActivityId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoryId", "ActivityId");
+
+                    b.HasIndex("ActivityId");
+
+                    b.ToTable("ActivitysCategories");
+                });
+
+            modelBuilder.Entity("Event.Entities.Concrete.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ActivityId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActivityId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Event.Entities.Concrete.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ActivityId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActivityId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Event.Entities.Concrete.Role", b =>
@@ -222,22 +258,22 @@ namespace Event.DataAccsess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Event.Entities.Concrete.UsersEvent", b =>
+            modelBuilder.Entity("Event.Entities.Concrete.User_Activity", b =>
                 {
-                    b.Property<int>("EventId")
+                    b.Property<int>("ActivityId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("EventId", "UserId");
+                    b.HasKey("ActivityId", "UserId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("UsersEvents");
                 });
 
-            modelBuilder.Entity("Event.Entities.Concrete.UsersRole", b =>
+            modelBuilder.Entity("Event.Entities.Concrete.Users_Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -273,20 +309,33 @@ namespace Event.DataAccsess.Migrations
                     b.ToTable("UsersRoles");
                 });
 
-            modelBuilder.Entity("Event.Entities.Concrete.Category", b =>
+            modelBuilder.Entity("Event.Entities.Concrete.Activitys_Category", b =>
                 {
-                    b.HasOne("Event.Entities.Concrete.Event", "Event")
-                        .WithMany("Categories")
-                        .HasForeignKey("EventId")
+                    b.HasOne("Event.Entities.Concrete.Activity", "Activity")
+                        .WithMany("ActivitysCategory")
+                        .HasForeignKey("ActivityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Event.Entities.Concrete.Category", "Category")
+                        .WithMany("ActivitysCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Event.Entities.Concrete.Category", b =>
+                {
+                    b.HasOne("Event.Entities.Concrete.Activity", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("ActivityId");
                 });
 
             modelBuilder.Entity("Event.Entities.Concrete.Comment", b =>
                 {
-                    b.HasOne("Event.Entities.Concrete.Event", null)
+                    b.HasOne("Event.Entities.Concrete.Activity", null)
                         .WithMany("Comments")
-                        .HasForeignKey("EventId");
+                        .HasForeignKey("ActivityId");
 
                     b.HasOne("Event.Entities.Concrete.User", "User")
                         .WithMany("Comments")
@@ -295,11 +344,11 @@ namespace Event.DataAccsess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Event.Entities.Concrete.UsersEvent", b =>
+            modelBuilder.Entity("Event.Entities.Concrete.User_Activity", b =>
                 {
-                    b.HasOne("Event.Entities.Concrete.Event", "Event")
-                        .WithMany("UsersEvents")
-                        .HasForeignKey("EventId")
+                    b.HasOne("Event.Entities.Concrete.Activity", "Activity")
+                        .WithMany("ActivitysEvents")
+                        .HasForeignKey("ActivityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -310,7 +359,7 @@ namespace Event.DataAccsess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Event.Entities.Concrete.UsersRole", b =>
+            modelBuilder.Entity("Event.Entities.Concrete.Users_Role", b =>
                 {
                     b.HasOne("Event.Entities.Concrete.Role", "Role")
                         .WithMany("UsersRoles")

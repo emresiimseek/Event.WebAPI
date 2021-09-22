@@ -70,9 +70,20 @@ namespace EventApi
             services.AddScoped(typeof(IAutoMapper), typeof(AutoMapperBase));
             services.AddScoped(typeof(IsExistFilter<>));
             services.AddScoped<IApplicationUser, ApplicationUser>();
+
+
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IEventDal, EventDal>();
-            services.AddScoped<IServiceResponseModel<Event.Entities.Concrete.Event>, ServiceResponseModel<Event.Entities.Concrete.Event>>();
+            services.AddScoped<IServiceResponseModel<Activity>, ServiceResponseModel<Activity>>();
+            services.AddScoped(typeof(IService<User>), typeof(UserService));
+
+            //sample
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryDal, CategoryDal>();
+            services.AddScoped<IServiceResponseModel<Category>, ServiceResponseModel<Category>>();
+            services.AddScoped(typeof(IService<Category>), typeof(CategoryService));
+            services.AddScoped<ILookUpService<Category>, LookUpService<Category>>();
+
 
 
 
@@ -112,6 +123,7 @@ namespace EventApi
             }).AddFluentValidation();
 
             services.AddTransient<IValidator<UserDto>, UserValidator>();
+            services.AddTransient<IValidator<ActivityDto>, ActivityValidator>();
 
 
             //idendity
