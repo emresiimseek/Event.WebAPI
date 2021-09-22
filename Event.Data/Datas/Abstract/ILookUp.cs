@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Event.Entities.Abstract
+namespace Event.Data.Datas.Abstract
 {
-    public interface IEntity
+    public interface ILookUp
     {
     }
 }

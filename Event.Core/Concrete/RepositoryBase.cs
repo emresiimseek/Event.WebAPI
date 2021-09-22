@@ -1,6 +1,8 @@
 ﻿using Event.Core.Abstract;
 using Event.Core.Helpers;
 using Event.Data.Concrete;
+using Event.Data.Datas.Concrete;
+using Event.Data.Enums;
 using Event.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -28,7 +30,7 @@ namespace Event.Core.Concrete
 
         public async Task<TEntity> AddSync(TEntity Entity)
         {
-            Entities.Concrete.Entity entity = setCreatedBy(Entity);
+          Entity entity = setCreatedBy(Entity);
 
             EntityEntry result = await _dbSet.AddAsync(entity as TEntity);
             await _dbContext.SaveChangesAsync();

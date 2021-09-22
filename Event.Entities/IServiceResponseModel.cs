@@ -1,4 +1,4 @@
-﻿using Event.Entities.Abstract;
+﻿using Event.Data.Datas.Abstract;
 using Event.Entities.Concrete;
 using Event.Entities.DTOs;
 using System;

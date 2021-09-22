@@ -1,5 +1,4 @@
 ﻿using Event.Entities;
-using Event.Entities.Abstract;
 using Event.Entities.DTOs;
 using System;
 using System.Collections.Generic;

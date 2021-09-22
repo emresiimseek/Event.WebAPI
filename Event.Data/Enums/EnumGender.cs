@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Event.Data.Concrete
+namespace Event.Data.Enums
 {
     public enum EnumGender
     {
