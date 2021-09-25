@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Event.Entities
 {
-    public class ServiceResponseModel<T> : IServiceResponseModel<T> where T : class, IEntity, new()
+    public class ServiceResponseModel<T> : IServiceResponseModel<T>
     {
 
         public ServiceResponseModel()

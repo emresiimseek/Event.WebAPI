@@ -11,6 +11,5 @@ namespace Event.Core.Utilities.Mapper
         List<TDest> MapToSameList<TSource, TDest>(List<TSource> list) where TSource : new();
         TDest MapToSameType<TSource, TDest>(TSource obg);
 
-
     }
 }

@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Event.Entities;
+using Event.Entities.Concrete;
+using Event.Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +12,7 @@ namespace Event.Core.Utilities.Mapper
     {
         public List<TDest> MapToSameList<TSource, TDest>(List<TSource> list) where TSource : new()
         {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<TSource, TDest>());
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<TSource, TDest>().ReverseMap());
             IMapper mapper = config.CreateMapper();
             return mapper.Map<List<TSource>, List<TDest>>(list);
             ;
@@ -17,7 +20,7 @@ namespace Event.Core.Utilities.Mapper
 
         public TDest MapToSameType<TSource, TDest>(TSource obj)
         {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<TSource, TDest>());
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<TSource, TDest>().ReverseMap());
             IMapper mapper = config.CreateMapper();
             return mapper.Map<TSource, TDest>(obj);
         }
