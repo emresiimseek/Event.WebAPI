@@ -17,7 +17,7 @@ namespace Event.DataAccsess
         }
 
         public DbSet<User_Role> UsersRoles { get; set; }
-        public DbSet<User_Activity> UsersEvents { get; set; }
+        public DbSet<User_Activity> UserActivities { get; set; }
         public DbSet<Activity_Category> ActivitysCategories { get; set; }
 
         public DbSet<Activity> Activities { get; set; }

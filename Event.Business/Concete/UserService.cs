@@ -31,7 +31,12 @@ namespace Event.Business.Concete
             this._appSettings = appSettings.Value;
         }
 
-        public async Task<Entities.IServiceResponseModel<User>> AddAsync(User Entity)
+        public async Task<User> AddAsync(User Entity)
+        {
+            return await _userDal.AddSync(Entity);
+
+        }
+        public async Task<ServiceResponseModel<User>> AddAsyncWithMessages(User Entity)
         {
             ServiceResponseModel<User> response = new ServiceResponseModel<User>();
 
@@ -61,14 +66,22 @@ namespace Event.Business.Concete
 
             ServiceResponseModel<User> response = new ServiceResponseModel<User>();
 
-            var result = await _userDal.GetAsync(p => p.UserName == username && p.Password == Encrypt(password));
+            var result = await _userDal.GetAsync(p => p.UserName == username);
+
             if (result == null)
             {
-                response.Errors.Add(new ErrorDto { StatusCode = 100, Errors = new List<string> { "Kullanıcı Adı veya Şifre uyuşmamaktadır" } });
-
+                response.Errors.Add(new ErrorDto { StatusCode = 100, Errors = new List<string> { "Kullanıcı bulunamadı." } });
                 return response;
-
             }
+
+            result = await _userDal.GetAsync(p => p.UserName == username && p.Password == Encrypt(password));
+
+            if (result == null)
+            {
+                response.Errors.Add(new ErrorDto { StatusCode = 100, Errors = new List<string> { "Kullanıcı adı veya Şifre uyuşmamaktadır." } });
+                return response;
+            }
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -100,25 +113,18 @@ namespace Event.Business.Concete
 
 
 
-        public async Task<ServiceResponseModel<User>> GetAsync(Expression<Func<User, bool>> filter = null)
+        public async Task<User> GetAsync(Expression<Func<User, bool>> filter = null)
         {
-            ServiceResponseModel<User> response = new ServiceResponseModel<User>();
 
-            var user = await _userDal.GetAsync(filter);
-            response.Model.Add(user);
-            return response;
+            return await _userDal.GetAsync(filter);
         }
 
 
 
-        public async Task<Entities.IServiceResponseModel<User>> GetByIdAsync(int id)
+        public async Task<User> GetByIdAsync(int id)
         {
-            ServiceResponseModel<User> response = new ServiceResponseModel<User>();
 
-            var result = await _userDal.GetByIdAsync(id);
-            response.Model.Add(result);
-
-            return response;
+            return await _userDal.GetByIdAsync(id);
         }
 
         public void Update(User Entity)
@@ -165,16 +171,16 @@ namespace Event.Business.Concete
             }
         }
 
-        public async Task<IServiceResponseModel<User>> GetAll(Expression<Func<User, bool>> filter = null)
+        public async Task<List<User>> GetAll(Expression<Func<User, bool>> filter = null)
         {
-            ServiceResponseModel<User> response = new ServiceResponseModel<User>();
 
-            var data = _userDal.GetAll(filter).ToList();
+            return _userDal.GetAll(filter).ToList();
 
-            response.Model = data;
+        }
 
-
-            return response;
+        public Task<List<User_Activity>> GetUserWithActivities(int UserId)
+        {
+            return _userDal.GetUserWithActivities(UserId);
         }
     }
 }

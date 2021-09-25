@@ -18,7 +18,7 @@ namespace Event.Core.Concrete
 {
     public class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class, new()
     {
-        private readonly DbContext _dbContext;
+        public readonly  DbContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;
         private readonly IApplicationUser _applicationUser;
 

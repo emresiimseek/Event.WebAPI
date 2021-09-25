@@ -17,6 +17,7 @@ namespace Event.Business.ValidationRules.FluentValidation
             RuleFor(u => u.Description).NotNull().MinimumLength(5);
             RuleFor(u => u.EventDate).NotEmpty();
             RuleFor(u => u.ActivityCategories).NotEmpty();
+            RuleFor(u => u.UserActivities).NotEmpty();
         }
     }
 }

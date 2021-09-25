@@ -27,7 +27,7 @@ namespace Event.Business.Concete
             var keyField = typeof(T).GetProperty(propKey);
             var valueField = typeof(T).GetProperty(propsValue);
 
-            var data = result.Model.Select(item =>
+            var data = result.Select(item =>
             {
                 string key = keyField.GetValue(item).ToString();
                 string value = valueField.GetValue(item).ToString();

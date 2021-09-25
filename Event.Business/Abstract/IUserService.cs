@@ -11,5 +11,10 @@ namespace Event.Business.Abstract
     public interface IUserService : IService<User>
     {
         Task<ServiceResponseModel<User>> Authenticate(string username, string password);
+        Task<ServiceResponseModel<User>> AddAsyncWithMessages(User Entity);
+        Task<List<User_Activity>> GetUserWithActivities(int UserId);
+
     }
+
+
 }

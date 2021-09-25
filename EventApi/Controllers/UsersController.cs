@@ -39,7 +39,7 @@ namespace EventApi.Controllers
         public async Task<IActionResult> Save(UserDto userDto)
         {
             var user = _autoMapper.MapToSameType<UserDto, User>(userDto);
-            var result = await _userService.AddAsync(user);
+            var result = await _userService.AddAsyncWithMessages(user);
             var addedUser = _autoMapper.MapToSameType<IServiceResponseModel<User>, IServiceResponseDto<UserDto>>(result);
 
             return Created(string.Empty, result);
@@ -51,14 +51,14 @@ namespace EventApi.Controllers
         {
             var result = await _userService.GetByIdAsync(id);
 
-            return Ok(_autoMapper.MapToSameList<User, UserDto>(result.Model));
+            return Ok(_autoMapper.MapToSameType<User, UserDto>(result));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var result = await _userService.GetAll();
-            return Ok(_autoMapper.MapToSameList<User, UserDto>(result.Model));
+            return Ok(_autoMapper.MapToSameList<User, UserDto>(result));
         }
 
         [HttpPut("{id}")]

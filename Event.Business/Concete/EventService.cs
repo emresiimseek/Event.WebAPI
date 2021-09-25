@@ -23,11 +23,9 @@ namespace Event.Business.Concete
             _serviceResponseModel = serviceResponseModel;
         }
 
-        public async Task<IServiceResponseModel<Activity>> AddAsync(Activity Entity)
+        public async Task<Activity> AddAsync(Activity Entity)
         {
-            var result = await _eventDal.AddSync(Entity);
-            _serviceResponseModel.Model.Add(result);
-            return _serviceResponseModel;
+            return await _eventDal.AddSync(Entity);
         }
 
         public void Delete(Activity Entity)
@@ -40,29 +38,19 @@ namespace Event.Business.Concete
             _eventDal.DeleteById(EntityId);
         }
 
-        public async Task<IServiceResponseModel<Activity>> GetAll(Expression<Func<Activity, bool>> filter = null)
+        public async Task<List<Activity>> GetAll(Expression<Func<Activity, bool>> filter)
         {
-            var result = _eventDal.GetAll(filter).ToList();
-            _serviceResponseModel.Model = result;
-
-            return _serviceResponseModel;
-
+            return _eventDal.GetAll(filter).ToList();
         }
 
-        public async Task<ServiceResponseModel<Activity>> GetAsync(Expression<Func<Activity, bool>> filter = null)
+        public async Task<Activity> GetAsync(Expression<Func<Activity, bool>> filter = null)
         {
-            var result = await _eventDal.GetAsync(filter);
-            _serviceResponseModel.Model.Add(result);
-            return (ServiceResponseModel<Activity>)_serviceResponseModel;
+            return await _eventDal.GetAsync(filter);
         }
-
-        public async Task<IServiceResponseModel<Activity>> GetByIdAsync(int id)
+        public async Task<Activity> GetByIdAsync(int id)
         {
-            var result = await _eventDal.GetByIdAsync(id);
+            return await _eventDal.GetByIdAsync(id);
 
-            _serviceResponseModel.Model.Add(result);
-
-            return _serviceResponseModel;
         }
 
         public void Update(Activity Entity)
@@ -70,5 +58,7 @@ namespace Event.Business.Concete
             _eventDal.Update(Entity);
 
         }
+
+       
     }
 }

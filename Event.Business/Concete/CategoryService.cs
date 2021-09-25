@@ -24,11 +24,9 @@ namespace Event.Business.Concete
         }
 
 
-        public async Task<IServiceResponseModel<Category>> AddAsync(Category Entity)
+        public async Task<Category> AddAsync(Category Entity)
         {
-            var result = await _categoryDal.AddSync(Entity);
-            _serviceResponseModel.Model.Add(result);
-            return _serviceResponseModel;
+            return await _categoryDal.AddSync(Entity);
         }
 
         public void Delete(Category Entity)
@@ -41,28 +39,20 @@ namespace Event.Business.Concete
             _categoryDal.DeleteById(EntityId);
         }
 
-        public async Task<IServiceResponseModel<Category>> GetAll(Expression<Func<Category, bool>> filter = null)
+        public async Task<List<Category>> GetAll(Expression<Func<Category, bool>> filter = null)
         {
-            var result = _categoryDal.GetAll(filter).ToList();
-            _serviceResponseModel.Model = result;
-
-            return _serviceResponseModel;
+            return  _categoryDal.GetAll(filter).ToList();
         }
 
-        public async Task<ServiceResponseModel<Category>> GetAsync(Expression<Func<Category, bool>> filter = null)
+        public async Task<Category> GetAsync(Expression<Func<Category, bool>> filter = null)
         {
-            var result = await _categoryDal.GetAsync(filter);
-            _serviceResponseModel.Model.Add(result);
-            return (ServiceResponseModel<Category>)_serviceResponseModel;
+            return await _categoryDal.GetAsync(filter);
         }
 
-        public async Task<IServiceResponseModel<Category>> GetByIdAsync(int id)
+        public async Task<Category> GetByIdAsync(int id)
         {
-            var result = await _categoryDal.GetByIdAsync(id);
+            return await _categoryDal.GetByIdAsync(id);
 
-            _serviceResponseModel.Model.Add(result);
-
-            return _serviceResponseModel;
         }
 
         public void Update(Category Entity)

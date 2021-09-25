@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Event.Entities
 {
-    public interface IServiceResponseModel<T> where T : class, IEntity, new()
+    public interface IServiceResponseModel<T> 
     {
         List<T> Model { get; set; }
         List<ErrorDto> Errors { get; set; }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Event.Entities.DTOs
 {
-    public class ServiceResponseDto<Dto> : IServiceResponseDto<Dto> where Dto : class, IDto, new()
+    public class ServiceResponseDto<Dto> : IServiceResponseDto<Dto> 
     {
         public ServiceResponseDto()
         {
