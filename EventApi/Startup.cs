@@ -1,5 +1,6 @@
 using Event.Business.Abstract;
 using Event.Business.Concete;
+using Event.Business.Mappers;
 using Event.Business.ValidationRules.FluentValidation;
 using Event.Core.Abstract;
 using Event.Core.Concrete;
@@ -64,6 +65,7 @@ namespace EventApi
             services.AddScoped<IEventDal, EventDal>();
             services.AddScoped<IServiceResponseModel<Activity>, ServiceResponseModel<Activity>>();
             services.AddScoped(typeof(IService<User>), typeof(UserService));
+            services.AddScoped(typeof(UserMapper));
 
             //sample
             services.AddScoped<ICategoryService, CategoryService>();

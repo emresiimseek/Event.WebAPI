@@ -12,7 +12,7 @@ namespace Event.Business.Abstract
     {
         Task<ServiceResponseModel<User>> Authenticate(string username, string password);
         Task<ServiceResponseModel<User>> AddAsyncWithMessages(User Entity);
-        Task<List<User_Activity>> GetUserWithActivities(int UserId);
+        Task<List<Activity>> GetUserWithActivities(int UserId);
 
     }
 

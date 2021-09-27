@@ -178,7 +178,7 @@ namespace Event.Business.Concete
 
         }
 
-        public Task<List<User_Activity>> GetUserWithActivities(int UserId)
+        public Task<List<Activity>> GetUserWithActivities(int UserId)
         {
             return _userDal.GetUserWithActivities(UserId);
         }

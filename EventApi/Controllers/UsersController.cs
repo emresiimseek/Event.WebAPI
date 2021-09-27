@@ -1,5 +1,6 @@
 ﻿using Event.Business.Abstract;
 using Event.Business.Concete;
+using Event.Business.Mappers;
 using Event.Core.Utilities.Mapper;
 using Event.DataAccsess;
 using Event.DataAccsess.Abstract;
@@ -27,11 +28,14 @@ namespace EventApi.Controllers
 
         private IUserService _userService { get; set; }
         private IAutoMapper _autoMapper { get; set; }
+        public UserMapper _userActivityMapper { get; set; }
 
-        public UsersController(IUserService userService, IAutoMapper autoMapper)
+
+        public UsersController(IUserService userService, IAutoMapper autoMapper, UserMapper userActivityMapper)
         {
             _userService = userService;
             _autoMapper = autoMapper;
+            _userActivityMapper = userActivityMapper;
         }
 
         [HttpPost]
@@ -68,6 +72,15 @@ namespace EventApi.Controllers
         {
             _userService.Update(_autoMapper.MapToSameType<UserDto, User>(userDto));
             return NoContent();
+        }
+
+        [HttpGet("GetUserWithActivities/{id}")]
+        public async Task<IActionResult> GetActivitiesByUser(int id)
+        {
+            var result = await _userService.GetUserWithActivities(id);
+
+            var mappedData = _userActivityMapper.MapUserActivity(result);
+            return Created(string.Empty, mappedData);
         }
 
     }
