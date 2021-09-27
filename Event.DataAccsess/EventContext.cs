@@ -14,6 +14,7 @@ namespace Event.DataAccsess
 
         public EventContext(DbContextOptions<EventContext> options) : base(options)
         {
+            this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
         public DbSet<User_Role> UsersRoles { get; set; }

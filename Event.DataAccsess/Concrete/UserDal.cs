@@ -19,9 +19,11 @@ namespace Event.DataAccsess
             _eventContext = eventContext;
 
         }
-        public async Task<List<User_Activity>> GetUserWithActivities(int UserId)
+        public async Task<List<Activity>> GetUserWithActivities(int UserId)
         {
-            return _eventContext.UserActivities.Include(u => u.User).Include(u => u.Activity).Where(u => u.UserId == UserId).ToList();
+            var result = _eventContext.Users.Include(u => u.UserActivities).ThenInclude(a => a.Activity).ThenInclude(b => b.ActivityCategories).ThenInclude(c => c.Category).FirstOrDefault(u => u.Id == UserId);
+
+            return result.UserActivities.Select(ua => ua.Activity).ToList();
         }
 
     }

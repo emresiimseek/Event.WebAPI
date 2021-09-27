@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Event.Business.Abstract;
+using Event.Business.Mappers;
 using Event.Core.Utilities.Mapper;
 using Event.Entities;
 using Event.Entities.Concrete;
@@ -23,6 +24,7 @@ namespace Event.WebAPI.Controllers
         public IEventService _eventService { get; set; }
         public IUserService _userService { get; set; }
         public IAutoMapper _autoMapper { get; set; }
+
 
         public ActivitiesController(IEventService eventService, IAutoMapper autoMapper, IUserService userService)
         {
@@ -51,27 +53,7 @@ namespace Event.WebAPI.Controllers
             return Created(string.Empty, serviceResponse);
         }
 
-        [HttpPost("getusersactivities/{id}")]
-        public async Task<IActionResult> GetActivitiesByUser(int id)
-        {
-            var result = await _userService.GetUserWithActivities(id);
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<User, UserDto>();
-                cfg.CreateMap<Activity, ActivityDto>();
-
-                cfg.CreateMap<User_Activity, UserActivityDto>()
-                .ForMember(dest => dest.UserDto, m => m.MapFrom(dest => dest.User))
-                .ForMember(dest => dest.ActivityDto, m => m.MapFrom(dest => dest.Activity));
-
-            });
-
-            var mapper = new Mapper(config);
-            var mappedData = mapper.Map<List<User_Activity>, List<UserActivityDto>>(result);
-
-            return Created(string.Empty, mappedData);
-        }
+     
 
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Event.DataAccsess.Migrations
 {
     [DbContext(typeof(EventContext))]
-    [Migration("20210925153732_init2")]
-    partial class init2
+    [Migration("20210927214802_init-1")]
+    partial class init1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,9 +100,6 @@ namespace Event.DataAccsess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ActivityId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
@@ -124,8 +121,6 @@ namespace Event.DataAccsess.Migrations
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ActivityId");
 
                     b.ToTable("Categories");
                 });
@@ -324,13 +319,6 @@ namespace Event.DataAccsess.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Event.Entities.Concrete.Category", b =>
-                {
-                    b.HasOne("Event.Entities.Concrete.Activity", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("ActivityId");
                 });
 
             modelBuilder.Entity("Event.Entities.Concrete.Comment", b =>

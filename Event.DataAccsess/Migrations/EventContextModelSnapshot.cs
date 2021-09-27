@@ -98,9 +98,6 @@ namespace Event.DataAccsess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ActivityId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
@@ -122,8 +119,6 @@ namespace Event.DataAccsess.Migrations
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ActivityId");
 
                     b.ToTable("Categories");
                 });
@@ -322,13 +317,6 @@ namespace Event.DataAccsess.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Event.Entities.Concrete.Category", b =>
-                {
-                    b.HasOne("Event.Entities.Concrete.Activity", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("ActivityId");
                 });
 
             modelBuilder.Entity("Event.Entities.Concrete.Comment", b =>

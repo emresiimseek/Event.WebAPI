@@ -9,6 +9,6 @@ namespace Event.DataAccsess.Abstract
 {
     public interface IUserDal : IRepository<User>
     {
-        Task<List<User_Activity>> GetUserWithActivities(int UserId);
+        Task<List<Activity>> GetUserWithActivities(int UserId);
     }
 }

@@ -29,6 +29,24 @@ namespace Event.DataAccsess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    ModifiedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<int>(nullable: false),
+                    ModifiedBy = table.Column<int>(nullable: false),
+                    State = table.Column<int>(nullable: false),
+                    Title = table.Column<string>(maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -72,28 +90,33 @@ namespace Event.DataAccsess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "ActivitysCategories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CategoryId = table.Column<int>(nullable: false),
+                    ActivityId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     ModifiedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<int>(nullable: false),
                     ModifiedBy = table.Column<int>(nullable: false),
-                    State = table.Column<int>(nullable: false),
-                    Title = table.Column<string>(maxLength: 100, nullable: false),
-                    ActivityId = table.Column<int>(nullable: true)
+                    State = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_ActivitysCategories", x => new { x.CategoryId, x.ActivityId });
                     table.ForeignKey(
-                        name: "FK_Categories_Activities_ActivityId",
+                        name: "FK_ActivitysCategories_Activities_ActivityId",
                         column: x => x.ActivityId,
                         principalTable: "Activities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ActivitysCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,7 +152,7 @@ namespace Event.DataAccsess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UsersEvents",
+                name: "UserActivities",
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
@@ -137,15 +160,15 @@ namespace Event.DataAccsess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsersEvents", x => new { x.ActivityId, x.UserId });
+                    table.PrimaryKey("PK_UserActivities", x => new { x.ActivityId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_UsersEvents_Activities_ActivityId",
+                        name: "FK_UserActivities_Activities_ActivityId",
                         column: x => x.ActivityId,
                         principalTable: "Activities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UsersEvents_Users_UserId",
+                        name: "FK_UserActivities_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -183,44 +206,9 @@ namespace Event.DataAccsess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ActivitysCategories",
-                columns: table => new
-                {
-                    CategoryId = table.Column<int>(nullable: false),
-                    ActivityId = table.Column<int>(nullable: false),
-                    Id = table.Column<int>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    ModifiedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<int>(nullable: false),
-                    ModifiedBy = table.Column<int>(nullable: false),
-                    State = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ActivitysCategories", x => new { x.CategoryId, x.ActivityId });
-                    table.ForeignKey(
-                        name: "FK_ActivitysCategories_Activities_ActivityId",
-                        column: x => x.ActivityId,
-                        principalTable: "Activities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ActivitysCategories_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_ActivitysCategories_ActivityId",
                 table: "ActivitysCategories",
-                column: "ActivityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Categories_ActivityId",
-                table: "Categories",
                 column: "ActivityId");
 
             migrationBuilder.CreateIndex(
@@ -234,8 +222,8 @@ namespace Event.DataAccsess.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UsersEvents_UserId",
-                table: "UsersEvents",
+                name: "IX_UserActivities_UserId",
+                table: "UserActivities",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -258,7 +246,7 @@ namespace Event.DataAccsess.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "UsersEvents");
+                name: "UserActivities");
 
             migrationBuilder.DropTable(
                 name: "UsersRoles");
@@ -267,13 +255,13 @@ namespace Event.DataAccsess.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
+                name: "Activities");
+
+            migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Activities");
         }
     }
 }
