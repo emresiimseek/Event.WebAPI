@@ -24,5 +24,22 @@ namespace Event.Business.Mappers
                   .ForMember(a => a.Categories, b => b.MapFrom(c => c.ActivityCategories));
               });
         }
+
+        public UserDto MapUser(User user)
+        {
+            return Map<User, UserDto>(user, cfg =>
+            {
+                cfg.CreateMap<User_User, UserUserDto>()
+                .ForMember(u => u.UserChild, b => b.MapFrom(z => z.UserChild))
+                .ForMember(u => u.UserParent, b => b.MapFrom(z => z.UserParent));
+
+               
+
+                cfg.CreateMap<User, UserDto>()
+               .ForMember(u => u.AreFirendsWithMe, b => b.MapFrom(z => z.AreFirendsWithMe))
+               .ForMember(u => u.IAmFriendsWith, b => b.MapFrom(z => z.IAmFriendsWith));
+
+            });
+        }
     }
 }

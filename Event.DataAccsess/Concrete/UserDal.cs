@@ -30,12 +30,17 @@ namespace Event.DataAccsess
 
         public async Task<List<User>> SearchUser(string SearchKey)
         {
-           return _eventContext.Users.Where(u => u.FirstName.Contains(SearchKey) || u.LastName.Contains(SearchKey)).ToList();
+            return _eventContext.Users.Where(u => u.FirstName.Contains(SearchKey) || u.LastName.Contains(SearchKey)).ToList();
         }
 
         public async Task<User> GetUserWithFriends(int UserId)
         {
-            return _eventContext.Users.Include(u => u.IAmFriendsWith).Include(u => u.AreFirendsWithMe).FirstOrDefault(u => u.Id == UserId);
+            return _eventContext.Users
+                .Include(u => u.IAmFriendsWith)
+                .ThenInclude(uu => uu.UserChild)
+                .Include(u => u.AreFirendsWithMe)
+                .ThenInclude(uu => uu.UserParent)
+                .FirstOrDefault(u => u.Id == UserId);
         }
 
 

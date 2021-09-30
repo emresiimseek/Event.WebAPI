@@ -54,7 +54,7 @@ namespace EventApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _userService.GetUserWithFriends(id);
-            return Ok(_autoMapper.MapToSameType<User, UserDto>(result));
+            return Ok(_userActivityMapper.MapUser(result));
         }
 
         [HttpGet]
