@@ -18,7 +18,7 @@ namespace Event.Entities.DTOs
         public string Password { get; set; }
         public string Email { get; set; }
         public string Token { get; set; }
-        public  List<User_User> IAmFriendsWith { get; set; }
-        public  List<User_User> AreFirendsWithMe { get; set; }
+        public  List<UserUserDto> IAmFriendsWith { get; set; }
+        public  List<UserUserDto> AreFirendsWithMe { get; set; }
     }
 }
