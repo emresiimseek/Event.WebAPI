@@ -18,7 +18,7 @@ namespace Event.Core.Concrete
 {
     public class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class, new()
     {
-        public readonly  DbContext _dbContext;
+        public readonly DbContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;
         private readonly IApplicationUser _applicationUser;
 
@@ -41,8 +41,8 @@ namespace Event.Core.Concrete
 
         public void Delete(TEntity entity)
         {
-            Entity deletedEntity = setCreatedByAndDelete(entity);
-            Update(entity as TEntity);
+            //Entity deletedEntity = setCreatedByAndDelete(entity);
+            _dbSet.Remove(entity);
             _dbContext.SaveChanges();
         }
 
@@ -62,7 +62,7 @@ namespace Event.Core.Concrete
             return filter == null ? _dbSet : _dbSet.Where(filter).Where(e => (e as Entity).State != EnumState.Deleted);
         }
 
-        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter)
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter = null)
         {
             var result = await _dbSet.FirstOrDefaultAsync(filter);
             return result;

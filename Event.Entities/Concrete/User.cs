@@ -19,5 +19,8 @@ namespace Event.Entities.Concrete
         public List<User_Role> UserRoles { get; set; }
         public List<Comment> Comments { get; set; }
 
+        public virtual List<User_User> IAmFriendsWith { get; set; }
+        public virtual List<User_User> AreFirendsWithMe { get; set; }
+
     }
 }
