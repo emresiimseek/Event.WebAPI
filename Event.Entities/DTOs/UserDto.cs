@@ -1,5 +1,6 @@
 ﻿using Event.Data.Concrete;
 using Event.Data.Enums;
+using Event.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,5 +18,7 @@ namespace Event.Entities.DTOs
         public string Password { get; set; }
         public string Email { get; set; }
         public string Token { get; set; }
+        public  List<User_User> IAmFriendsWith { get; set; }
+        public  List<User_User> AreFirendsWithMe { get; set; }
     }
 }

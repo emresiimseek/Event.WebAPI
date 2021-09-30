@@ -67,6 +67,9 @@ namespace EventApi
             services.AddScoped(typeof(IService<User>), typeof(UserService));
             services.AddScoped(typeof(UserMapper));
 
+            services.AddScoped<IUserUserDal, UserUserDal>();
+
+
             //sample
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryDal, CategoryDal>();
@@ -143,7 +146,7 @@ namespace EventApi
             {
                 endpoints.MapControllers();
             });
-            
+
         }
     }
 }

@@ -23,8 +23,21 @@ namespace Event.DataAccsess
         {
             var result = _eventContext.Users.Include(u => u.UserActivities).ThenInclude(a => a.Activity).ThenInclude(b => b.ActivityCategories).ThenInclude(c => c.Category).FirstOrDefault(u => u.Id == UserId);
 
+            var test = _eventContext.Users.Include(s => s.IAmFriendsWith).ToList();
+
             return result.UserActivities.Select(ua => ua.Activity).ToList();
         }
+
+        public async Task<List<User>> SearchUser(string SearchKey)
+        {
+           return _eventContext.Users.Where(u => u.FirstName.Contains(SearchKey) || u.LastName.Contains(SearchKey)).ToList();
+        }
+
+        public async Task<User> GetUserWithFriends(int UserId)
+        {
+            return _eventContext.Users.Include(u => u.IAmFriendsWith).Include(u => u.AreFirendsWithMe).FirstOrDefault(u => u.Id == UserId);
+        }
+
 
     }
 }

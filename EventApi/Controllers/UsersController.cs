@@ -53,8 +53,7 @@ namespace EventApi.Controllers
         [ServiceFilter(typeof(IsExistFilter<User>))]
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await _userService.GetByIdAsync(id);
-
+            var result = await _userService.GetUserWithFriends(id);
             return Ok(_autoMapper.MapToSameType<User, UserDto>(result));
         }
 
@@ -82,6 +81,31 @@ namespace EventApi.Controllers
             var mappedData = _userActivityMapper.MapUserActivity(result);
             return Created(string.Empty, mappedData);
         }
+
+        [HttpPost("AddFriend")]
+        public async Task<IActionResult> AddFriend(User_User User)
+        {
+            var result = await _userService.AddFriend(User);
+
+            return Created(string.Empty, result);
+        }
+
+        [HttpPost("RemoveFriend")]
+        public IActionResult RemoveFriend(User_User User)
+        {
+            _userService.RemoveFriend(User);
+            return NoContent();
+        }
+
+        [HttpPost("SearchUser")]
+        public async Task<IActionResult> SearchUser([FromBody] string SearchKey)
+        {
+            var result = await _userService.SearchUser(SearchKey);
+            var mappedData = _autoMapper.MapToSameList<User, UserDto>(result);
+            return Created(string.Empty, mappedData);
+        }
+
+
 
     }
 }

@@ -10,5 +10,9 @@ namespace Event.DataAccsess.Abstract
     public interface IUserDal : IRepository<User>
     {
         Task<List<Activity>> GetUserWithActivities(int UserId);
+
+        Task<List<User>> SearchUser(string SearchKey);
+        Task<User> GetUserWithFriends(int UserId);
+
     }
 }

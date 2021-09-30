@@ -13,7 +13,7 @@ namespace Event.Core.Abstract
         void Delete(TEntity Entity);
         void DeleteById(object EntityId);
         Task<TEntity> GetByIdAsync(int Id);
-        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter);
+        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter=null);
         IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null);
     }
 }

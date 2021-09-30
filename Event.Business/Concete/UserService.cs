@@ -24,11 +24,13 @@ namespace Event.Business.Concete
         private static string key { get; set; } = "A!9HHhi%XjjYY4YP2@Nob009X";
         private readonly AppSettings _appSettings;
         private IUserDal _userDal { get; set; }
+        private IUserUserDal _userUserDal { get; set; }
 
-        public UserService(IUserDal userDal, IOptions<AppSettings> appSettings)
+        public UserService(IUserDal userDal, IUserUserDal userUserDal, IOptions<AppSettings> appSettings)
         {
             this._userDal = userDal;
             this._appSettings = appSettings.Value;
+            _userUserDal = userUserDal;
         }
 
         public async Task<User> AddAsync(User Entity)
@@ -123,7 +125,6 @@ namespace Event.Business.Concete
 
         public async Task<User> GetByIdAsync(int id)
         {
-
             return await _userDal.GetByIdAsync(id);
         }
 
@@ -181,6 +182,27 @@ namespace Event.Business.Concete
         public Task<List<Activity>> GetUserWithActivities(int UserId)
         {
             return _userDal.GetUserWithActivities(UserId);
+        }
+
+
+        public Task<User_User> AddFriend(User_User User)
+        {
+            return _userUserDal.AddSync(User);
+        }
+
+        public async Task<List<User>> SearchUser(string SearchKey)
+        {
+            return await _userDal.SearchUser(SearchKey);
+        }
+
+        public Task<User> GetUserWithFriends(int UserId)
+        {
+            return _userDal.GetUserWithFriends(UserId);
+        }
+
+        public void  RemoveFriend (User_User User)
+        {
+            _userUserDal.Delete(User);
         }
     }
 }

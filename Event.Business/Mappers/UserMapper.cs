@@ -21,8 +21,7 @@ namespace Event.Business.Mappers
                   .ForMember(a => a.Title, b => b.MapFrom(c => c.Title))
                   .ForMember(a => a.Description, b => b.MapFrom(c => c.Description))
                   .ForMember(a => a.EventDate, b => b.MapFrom(c => c.EventDate))
-                  .ForMember(a => a.ActivityCategories, b => b.MapFrom(c => c.ActivityCategories));
-
+                  .ForMember(a => a.Categories, b => b.MapFrom(c => c.ActivityCategories));
               });
         }
     }
