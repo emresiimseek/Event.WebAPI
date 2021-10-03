@@ -2,6 +2,7 @@
 using Event.Core.Helpers;
 using Event.DataAccsess.Abstract;
 using Event.Entities.Concrete;
+using Event.Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,24 @@ namespace Event.DataAccsess.Concrete
 {
     public class EventDal : RepositoryBase<Activity>, IEventDal
     {
-        public EventContext EventContext { get => _dbContext as EventContext; }
-        public EventDal(EventContext context, IApplicationUser applicationUser) : base(context, applicationUser)
+        public EventContext _eventContext { get; set; }
+        public EventDal(EventContext context, IApplicationUser applicationUser, EventContext eventContext) : base(context, applicationUser)
         {
+            _eventContext = eventContext;
+
         }
-        
+
+        public async Task<List<User_Activity>> GetAllFriendsActivities(int id)
+        {
+            var data = _eventContext.Users
+              .Include(u => u.IAmFriendsWith)
+              .ThenInclude(uu => uu.UserChild)
+              .ThenInclude(a => a.UserActivities)
+              .ThenInclude(x => x.Activity)
+              .ThenInclude(a=>a.ActivityCategories).ThenInclude(a=>a.Category)
+              .FirstOrDefault(u => u.Id == id);
+
+            return data.IAmFriendsWith.SelectMany(x => x.UserChild.UserActivities.Select(x => x)).ToList();
+        }
     }
 }

@@ -66,6 +66,7 @@ namespace EventApi
             services.AddScoped<IServiceResponseModel<Activity>, ServiceResponseModel<Activity>>();
             services.AddScoped(typeof(IService<User>), typeof(UserService));
             services.AddScoped(typeof(UserMapper));
+            services.AddScoped(typeof(ActivityMapper));
 
             services.AddScoped<IUserUserDal, UserUserDal>();
 

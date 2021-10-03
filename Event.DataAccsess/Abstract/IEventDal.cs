@@ -9,6 +9,6 @@ namespace Event.DataAccsess.Abstract
 {
     public interface IEventDal : IRepository<Activity>
     {
-
+        Task<List<User_Activity>> GetAllFriendsActivities(int id);
     }
 }

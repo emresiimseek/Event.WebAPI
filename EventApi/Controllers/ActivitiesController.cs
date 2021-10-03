@@ -53,7 +53,15 @@ namespace Event.WebAPI.Controllers
             return Created(string.Empty, serviceResponse);
         }
 
-     
+        [HttpGet("GetAllFriendsActivities/{id}")]
+        public async Task<IActionResult> GetAllFriendsActivities(int id)
+        {
+            var result = await _eventService.GetAllFriendsActivities(id);
+            return Ok(result);
+
+        }
+
+
 
     }
 }
