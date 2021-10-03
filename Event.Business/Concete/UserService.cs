@@ -195,12 +195,26 @@ namespace Event.Business.Concete
             return await _userDal.SearchUser(SearchKey);
         }
 
-        public Task<User> GetUserWithFriends(int UserId)
+        public async Task<User> GetUserWithFriends(int UserId)
         {
-            return _userDal.GetUserWithFriends(UserId);
+            var user = await _userDal.GetUserWithFriends(UserId);
+
+            if (user.PrivateAccount)
+            {
+                var areFriendsWithMe = user.AreFirendsWithMe.Where(f => f.Approved).ToList();
+                var iAmFriendsWith = user.IAmFriendsWith.Where(f => f.Approved).ToList();
+
+                user.IAmFriendsWith = iAmFriendsWith;
+                user.AreFirendsWithMe = areFriendsWithMe;
+
+            }
+            
+
+            return user;
+
         }
 
-        public void  RemoveFriend (User_User User)
+        public void RemoveFriend(User_User User)
         {
             _userUserDal.Delete(User);
         }

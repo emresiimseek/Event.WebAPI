@@ -15,6 +15,7 @@ namespace Event.Entities.Concrete
         public string Token { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
+        public bool PrivateAccount { get; set; }
         public List<User_Activity> UserActivities { get; set; }
         public List<User_Role> UserRoles { get; set; }
         public List<Comment> Comments { get; set; }
