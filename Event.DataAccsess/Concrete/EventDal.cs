@@ -28,10 +28,13 @@ namespace Event.DataAccsess.Concrete
               .ThenInclude(uu => uu.UserChild)
               .ThenInclude(a => a.UserActivities)
               .ThenInclude(x => x.Activity)
-              .ThenInclude(a=>a.ActivityCategories).ThenInclude(a=>a.Category)
+              .ThenInclude(a => a.ActivityCategories).ThenInclude(a => a.Category)
               .FirstOrDefault(u => u.Id == id);
 
-            return data.IAmFriendsWith.SelectMany(x => x.UserChild.UserActivities.Select(x => x)).ToList();
+            if (data.PrivateAccount)
+                return data.IAmFriendsWith.Where(u => u.Approved).SelectMany(x => x.UserChild.UserActivities.Select(x => x)).ToList();
+            else return data.IAmFriendsWith.SelectMany(x => x.UserChild.UserActivities.Select(x => x)).ToList();
+
         }
     }
 }
