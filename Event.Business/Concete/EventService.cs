@@ -1,7 +1,9 @@
 ﻿using Event.Business.Abstract;
+using Event.Business.Mappers;
 using Event.DataAccsess.Abstract;
 using Event.Entities;
 using Event.Entities.Concrete;
+using Event.Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +18,13 @@ namespace Event.Business.Concete
 
         private IEventDal _eventDal { get; set; }
         private IServiceResponseModel<Activity> _serviceResponseModel { get; set; }
+        private ActivityMapper _activityMapper { get; set; }
 
-        public EventService(IEventDal eventDal, IServiceResponseModel<Activity> serviceResponseModel)
+        public EventService(IEventDal eventDal, IServiceResponseModel<Activity> serviceResponseModel, ActivityMapper activityMapper)
         {
             _eventDal = eventDal;
             _serviceResponseModel = serviceResponseModel;
+            _activityMapper = activityMapper;
         }
 
         public async Task<Activity> AddAsync(Activity Entity)
@@ -59,6 +63,14 @@ namespace Event.Business.Concete
 
         }
 
-       
+        public async Task<List<MainFlowUserActivityDto>> GetAllFriendsActivities(int id)
+        {
+            var values = await _eventDal.GetAllFriendsActivities(id);
+
+            return _activityMapper.MapFirendsActivities(values);
+
+
+
+        }
     }
 }
