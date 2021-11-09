@@ -47,7 +47,7 @@ namespace Event.Business.Concete
             if (user != null)
             {
                 ErrorDto errorDto = new ErrorDto();
-                errorDto.Errors.Add("hata güzelim");
+                errorDto.Errors.Add("Bu bilgilere sahip başka bir hesap mevcut.");
                 errorDto.StatusCode = 400;
                 response.Errors.Add(errorDto);
                 return response;

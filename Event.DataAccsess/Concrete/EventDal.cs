@@ -23,7 +23,11 @@ namespace Event.DataAccsess.Concrete
 
         public async Task<List<User_Activity>> GetAllFriendsActivities(int id)
         {
+            var list = new List<User_Activity>();
+
             var data = _eventContext.Users
+              .Include(u => u.UserActivities)
+              .ThenInclude(b => b.Activity)
               .Include(u => u.IAmFriendsWith)
               .ThenInclude(uu => uu.UserChild)
               .ThenInclude(a => a.UserActivities)
@@ -31,9 +35,16 @@ namespace Event.DataAccsess.Concrete
               .ThenInclude(a => a.ActivityCategories).ThenInclude(a => a.Category)
               .FirstOrDefault(u => u.Id == id);
 
+            var mine = data.UserActivities;
+
+            list.AddRange(mine);
+
+
             if (data.PrivateAccount)
-                return data.IAmFriendsWith.Where(u => u.Approved).SelectMany(x => x.UserChild.UserActivities.Select(x => x)).ToList();
-            else return data.IAmFriendsWith.SelectMany(x => x.UserChild.UserActivities.Select(x => x)).ToList();
+                list.AddRange(data.IAmFriendsWith.Where(u => u.Approved).SelectMany(x => x.UserChild.UserActivities.Select(x => x)).ToList());
+            else list.AddRange(data.IAmFriendsWith.SelectMany(x => x.UserChild.UserActivities.Select(x => x)).ToList());
+
+            return list.OrderBy(x => x.Activity.EventDate).ToList();
 
         }
     }

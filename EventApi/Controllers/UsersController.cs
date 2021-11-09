@@ -39,7 +39,7 @@ namespace EventApi.Controllers
         }
 
         [HttpPost]
-        [ValidationFilter]
+        //[ValidationFilter]
         public async Task<IActionResult> Save(UserDto userDto)
         {
             var user = _autoMapper.MapToSameType<UserDto, User>(userDto);

@@ -120,6 +120,7 @@ namespace EventApi
 
             //validators
             services.AddTransient<IValidator<UserDto>, UserValidator>();
+            services.AddTransient<IValidator<UserAuthenticationDto>,UserAuthenticationDtoValidator>();
             services.AddTransient<IValidator<ActivityDto>, ActivityValidator>();
 
         }
