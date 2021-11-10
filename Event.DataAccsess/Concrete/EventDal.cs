@@ -28,6 +28,7 @@ namespace Event.DataAccsess.Concrete
             var data = _eventContext.Users
               .Include(u => u.UserActivities)
               .ThenInclude(b => b.Activity)
+              .ThenInclude(b => b.ActivityCategories).ThenInclude(a => a.Category)
               .Include(u => u.IAmFriendsWith)
               .ThenInclude(uu => uu.UserChild)
               .ThenInclude(a => a.UserActivities)
