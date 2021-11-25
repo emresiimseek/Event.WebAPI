@@ -70,11 +70,19 @@ namespace Event.WebAPI.Controllers
 
         }
 
-        [HttpPost("LikeActivities")]
-        public async Task<IActionResult> GetAllFriendsActivities(Activity_Like Like)
+        [HttpPost("LikeActivity")]
+        public async Task<IActionResult> Like(Activity_Like Like)
         {
-            var result = await _eventService.LikeActivities(Like);
+            var result = await _eventService.LikeActivity(Like);
             return Created(string.Empty, result);
+
+        }
+
+        [HttpPost("UnlikeActivity")]
+        public async Task<IActionResult> UnLike(Activity_Like Like)
+        {
+             _eventService.UnLikeActivity(Like);
+            return NoContent();
 
         }
 

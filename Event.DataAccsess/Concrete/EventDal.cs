@@ -43,7 +43,7 @@ namespace Event.DataAccsess.Concrete
               .FirstOrDefault(u => u.Id == id);
 
             var mine = data.UserActivities;
-            
+
 
             list.AddRange(mine);
 
@@ -52,7 +52,7 @@ namespace Event.DataAccsess.Concrete
                 list.AddRange(data.IAmFriendsWith.Where(u => u.Approved).SelectMany(x => x.UserChild.UserActivities.Select(x => x)).ToList());
             else list.AddRange(data.IAmFriendsWith.SelectMany(x => x.UserChild.UserActivities.Select(x => x)).ToList());
 
-            return  list.OrderBy(x => x.Activity.EventDate).ToList();
+            return list.OrderBy(x => x.Activity.EventDate).ToList();
 
         }
 
@@ -63,7 +63,12 @@ namespace Event.DataAccsess.Concrete
             return (Activity_Like)result.Entity;
 
         }
-        public async Task<User_Activity> GetUserActivity(int ActivityId,int UserId)
+        public async Task<Activity_Like> GetActivityLike(Activity_Like Like)
+        {
+            return await _eventContext.ActivityLikes.FirstAsync(al => al.ActivityId == Like.ActivityId && al.UserId == Like.UserId);
+
+        }
+        public async Task<User_Activity> GetUserActivity(int ActivityId, int UserId)
         {
             var data = _eventContext.Users
               .Include(u => u.UserActivities)
@@ -78,10 +83,18 @@ namespace Event.DataAccsess.Concrete
               .ThenInclude(a => a.UserActivities)
               .ThenInclude(x => x.Activity)
               .ThenInclude(a => a.ActivityCategories).ThenInclude(a => a.Category)
-              .FirstOrDefault(u => u.Id == UserId).UserActivities.FirstOrDefault(x=>x.ActivityId==ActivityId);
+              .FirstOrDefault(u => u.Id == UserId).UserActivities.FirstOrDefault(x => x.ActivityId == ActivityId);
 
             return data;
 
+        }
+
+        public async Task<Activity_Like> UnLikeActivities(Activity_Like Like)
+        {
+            _dbContext.Entry(Like).State = EntityState.Deleted;
+            _dbContext.SaveChanges();
+
+            return Like;
         }
     }
 }

@@ -18,8 +18,16 @@ namespace Event.Business.Mappers
                   .ForMember(c => c.Id, b => b.MapFrom(z => z.CategoryId))
                   .ForMember(c => c.Title, c => c.MapFrom(s => s.Category.Title));
 
+                  cfg.CreateMap<Activity_Like, ActivityLikeDto>()
+            .ForMember(c => c.UserId, z => z.MapFrom(c => c.UserId))
+            .ForMember(c => c.UserName, z => z.MapFrom(c => c.User.UserName))
+            .ForMember(c => c.UserFullName, z => z.MapFrom(c => c.User.FirstName + " " + c.User.LastName))
+            .ForMember(c => c.ActivityId, z => z.MapFrom(c => c.ActivityId));
+
                   cfg.CreateMap<Activity, MainFlowUserActivityDto>()
                   .ForMember(a => a.ActivityTitle, b => b.MapFrom(c => c.Title))
+                  .ForMember(a => a.ActivityId, b => b.MapFrom(c => c.Id))
+                  .ForMember(a => a.UsersLikes, b => b.MapFrom(c => c.ActivityLikes))
                   .ForMember(a => a.ActivityDescription, b => b.MapFrom(c => c.Description))
                   .ForMember(a => a.ActivityDate, b => b.MapFrom(c => c.EventDate))
                   .ForMember(a => a.Categories, b => b.MapFrom(c => c.ActivityCategories))

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Event.Data.Datas.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Event.Entities.Concrete
 {
-    public class Activity_Like
+    public class Activity_Like: Entity
     {
         public int UserId { get; set; }
         public int ActivityId { get; set; }

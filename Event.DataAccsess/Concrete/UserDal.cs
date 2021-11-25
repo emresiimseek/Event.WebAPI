@@ -21,7 +21,15 @@ namespace Event.DataAccsess
         }
         public async Task<List<Activity>> GetUserWithActivities(int UserId)
         {
-            var result = _eventContext.Users.Include(u => u.UserActivities).ThenInclude(a => a.Activity).ThenInclude(b => b.ActivityCategories).ThenInclude(c => c.Category).FirstOrDefault(u => u.Id == UserId);
+            var result = _eventContext.Users
+                .Include(u => u.UserActivities)
+                .ThenInclude(a => a.Activity)
+                .ThenInclude(b => b.ActivityCategories)
+                .ThenInclude(c => c.Category)
+                .Include(u => u.UserActivities)
+                .ThenInclude(a => a.Activity)
+                .ThenInclude(x=>x.ActivityLikes)
+                .FirstOrDefault(u => u.Id == UserId);
 
             var test = _eventContext.Users.Include(s => s.IAmFriendsWith).ToList();
 
