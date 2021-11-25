@@ -74,6 +74,8 @@ namespace EventApi
             //sample
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryDal, CategoryDal>();
+            services.AddScoped<IActivityLikeDal, ActivityLikeDal>();
+            services.AddScoped<ICategoryDal, CategoryDal>();
             services.AddScoped<IServiceResponseModel<Category>, ServiceResponseModel<Category>>();
             services.AddScoped(typeof(IService<Category>), typeof(CategoryService));
             services.AddScoped<ILookUpService<Category>, LookUpService<Category>>();

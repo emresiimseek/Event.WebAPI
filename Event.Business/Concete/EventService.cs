@@ -17,14 +17,16 @@ namespace Event.Business.Concete
     {
 
         private IEventDal _eventDal { get; set; }
+        private IActivityLikeDal _activityLikeDal { get; set; }
         private IServiceResponseModel<Activity> _serviceResponseModel { get; set; }
         private ActivityMapper _activityMapper { get; set; }
 
-        public EventService(IEventDal eventDal, IServiceResponseModel<Activity> serviceResponseModel, ActivityMapper activityMapper)
+        public EventService(IEventDal eventDal, IServiceResponseModel<Activity> serviceResponseModel, ActivityMapper activityMapper, IActivityLikeDal activityLikeDal)
         {
             _eventDal = eventDal;
             _serviceResponseModel = serviceResponseModel;
             _activityMapper = activityMapper;
+            _activityLikeDal = activityLikeDal;
         }
 
         public async Task<Activity> AddAsync(Activity Entity)
@@ -51,7 +53,7 @@ namespace Event.Business.Concete
         {
             return await _eventDal.GetAsync(filter);
         }
-      
+
 
         public void Update(Activity Entity)
         {
@@ -69,11 +71,17 @@ namespace Event.Business.Concete
 
         }
 
-        public Task<Activity_Like> LikeActivities(Activity_Like Like)
+        public async Task<Activity_Like> LikeActivity(Activity_Like Like)
         {
-            return _eventDal.LikeActivities(Like);
+            return await _activityLikeDal.AddSync(Like);
+
         }
-      
+
+        public  void UnLikeActivity(Activity_Like Like)
+        {
+              _activityLikeDal.Delete(Like);
+        }
+
 
         public async Task<MainFlowUserActivityDto> GetEventById(int ActivityId, int UserId)
         {

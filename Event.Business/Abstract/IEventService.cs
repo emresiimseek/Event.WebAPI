@@ -11,7 +11,8 @@ namespace Event.Business.Abstract
     public interface IEventService : IService<Activity>
     {
         Task<List<MainFlowUserActivityDto>> GetAllFriendsActivities(int id);
-        Task<Activity_Like> LikeActivities(Activity_Like Like);
+        public void UnLikeActivity(Activity_Like Like);
+        public Task<Activity_Like> LikeActivity(Activity_Like Like);
         Task<MainFlowUserActivityDto> GetEventById(int ActivityId, int UserId);
 
     }
