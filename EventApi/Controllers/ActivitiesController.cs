@@ -41,6 +41,13 @@ namespace Event.WebAPI.Controllers
             return Ok(await _eventService.GetAll());
         }
 
+        // GET: api/<ActivitiesController>
+        [HttpPost("GetEvent")]
+        public async Task<IActionResult> GetById(User_Activity value)
+        {
+            return Ok(await _eventService.GetEventById(value.ActivityId, value.UserId));
+        }
+
         // POST api/<ActivitiesController>
         [HttpPost]
         [ValidationFilter]
@@ -53,6 +60,8 @@ namespace Event.WebAPI.Controllers
             return Created(string.Empty, serviceResponse);
         }
 
+
+
         [HttpGet("GetAllFriendsActivities/{id}")]
         public async Task<IActionResult> GetAllFriendsActivities(int id)
         {
@@ -61,7 +70,13 @@ namespace Event.WebAPI.Controllers
 
         }
 
+        [HttpPost("LikeActivities")]
+        public async Task<IActionResult> GetAllFriendsActivities(Activity_Like Like)
+        {
+            var result = await _eventService.LikeActivities(Like);
+            return Created(string.Empty, result);
 
+        }
 
     }
 }
