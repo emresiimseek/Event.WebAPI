@@ -20,6 +20,7 @@ namespace Event.DataAccsess
         public DbSet<User_Role> UsersRoles { get; set; }
         public DbSet<User_Activity> UserActivities { get; set; }
         public DbSet<Activity_Category> ActivitysCategories { get; set; }
+        public DbSet<Activity_Like> ActivityLikes { get; set; }
 
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -32,6 +33,7 @@ namespace Event.DataAccsess
         {
             modelBuilder.Entity<User_Activity>().HasKey(UsersEvent => new { UsersEvent.ActivityId, UsersEvent.UserId });
             modelBuilder.Entity<Activity_Category>().HasKey(EventsCategory => new { EventsCategory.CategoryId, EventsCategory.ActivityId });
+            modelBuilder.Entity<Activity_Like>().HasKey(EventsCategory => new { EventsCategory.ActivityId, EventsCategory.UserId });
 
 
             //friends

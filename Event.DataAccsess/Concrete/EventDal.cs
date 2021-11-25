@@ -4,9 +4,11 @@ using Event.DataAccsess.Abstract;
 using Event.Entities.Concrete;
 using Event.Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,7 +30,11 @@ namespace Event.DataAccsess.Concrete
             var data = _eventContext.Users
               .Include(u => u.UserActivities)
               .ThenInclude(b => b.Activity)
-              .ThenInclude(b => b.ActivityCategories).ThenInclude(a => a.Category)
+              .ThenInclude(x => x.ActivityLikes)
+              .Include(b => b.UserActivities)
+              .ThenInclude(x => x.Activity)
+              .ThenInclude(x => x.ActivityCategories)
+              .ThenInclude(a => a.Category)
               .Include(u => u.IAmFriendsWith)
               .ThenInclude(uu => uu.UserChild)
               .ThenInclude(a => a.UserActivities)
@@ -37,6 +43,7 @@ namespace Event.DataAccsess.Concrete
               .FirstOrDefault(u => u.Id == id);
 
             var mine = data.UserActivities;
+            
 
             list.AddRange(mine);
 
@@ -45,7 +52,35 @@ namespace Event.DataAccsess.Concrete
                 list.AddRange(data.IAmFriendsWith.Where(u => u.Approved).SelectMany(x => x.UserChild.UserActivities.Select(x => x)).ToList());
             else list.AddRange(data.IAmFriendsWith.SelectMany(x => x.UserChild.UserActivities.Select(x => x)).ToList());
 
-            return list.OrderBy(x => x.Activity.EventDate).ToList();
+            return  list.OrderBy(x => x.Activity.EventDate).ToList();
+
+        }
+
+        public async Task<Activity_Like> LikeActivities(Activity_Like Like)
+        {
+            EntityEntry result = await _eventContext.ActivityLikes.AddAsync(Like);
+            await _dbContext.SaveChangesAsync();
+            return (Activity_Like)result.Entity;
+
+        }
+        public async Task<User_Activity> GetUserActivity(int ActivityId,int UserId)
+        {
+            var data = _eventContext.Users
+              .Include(u => u.UserActivities)
+              .ThenInclude(b => b.Activity)
+              .ThenInclude(x => x.ActivityLikes)
+              .Include(b => b.UserActivities)
+              .ThenInclude(x => x.Activity)
+              .ThenInclude(x => x.ActivityCategories)
+              .ThenInclude(a => a.Category)
+              .Include(u => u.IAmFriendsWith)
+              .ThenInclude(uu => uu.UserChild)
+              .ThenInclude(a => a.UserActivities)
+              .ThenInclude(x => x.Activity)
+              .ThenInclude(a => a.ActivityCategories).ThenInclude(a => a.Category)
+              .FirstOrDefault(u => u.Id == UserId).UserActivities.FirstOrDefault(x=>x.ActivityId==ActivityId);
+
+            return data;
 
         }
     }

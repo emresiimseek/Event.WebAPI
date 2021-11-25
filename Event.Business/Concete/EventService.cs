@@ -51,11 +51,7 @@ namespace Event.Business.Concete
         {
             return await _eventDal.GetAsync(filter);
         }
-        public async Task<Activity> GetByIdAsync(int id)
-        {
-            return await _eventDal.GetByIdAsync(id);
-
-        }
+      
 
         public void Update(Activity Entity)
         {
@@ -71,6 +67,23 @@ namespace Event.Business.Concete
 
 
 
+        }
+
+        public Task<Activity_Like> LikeActivities(Activity_Like Like)
+        {
+            return _eventDal.LikeActivities(Like);
+        }
+      
+
+        public async Task<MainFlowUserActivityDto> GetEventById(int ActivityId, int UserId)
+        {
+            var value = await _eventDal.GetUserActivity(ActivityId, UserId);
+            return _activityMapper.MapMainEvent(value);
+        }
+
+        public Task<Activity> GetByIdAsync(int id)
+        {
+            return _eventDal.GetByIdAsync(id);
         }
     }
 }

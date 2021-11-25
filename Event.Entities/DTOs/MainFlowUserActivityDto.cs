@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Event.Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,6 +14,8 @@ namespace Event.Entities.DTOs
         public string ActivityTitle { get; set; }
         public List<CategoryDto> Categories { get; set; }
         public DateTime ActivityDate { get; set; }
+        public List<ActivityLikeDto> UsersLikes { get; set; }
+        public int ActivityId { get; set; }
 
     }
 }

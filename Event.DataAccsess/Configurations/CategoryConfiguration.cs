@@ -16,9 +16,6 @@ namespace Event.DataAccsess.Configurations
             builder.Property(e => e.Id).UseMySqlIdentityColumn();
             builder.Property(e => e.Title).HasMaxLength(100).IsRequired();
 
-
-
-
         }
     }
 }
