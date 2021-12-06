@@ -15,6 +15,7 @@ namespace Event.Entities.DTOs
         public List<CategoryDto> Categories { get; set; }
         public DateTime ActivityDate { get; set; }
         public List<ActivityLikeDto> UsersLikes { get; set; }
+        public string avatarLetter { get; set; }
         public int ActivityId { get; set; }
 
     }

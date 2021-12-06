@@ -63,6 +63,7 @@ namespace Event.Business.Mappers
                .ForMember(c => c.ActivityTitle, c => c.MapFrom(s => s.Activity.Title))
                .ForMember(c => c.ActivityId, c => c.MapFrom(s => s.Activity.Id))
                .ForMember(c => c.UsersLikes, c => c.MapFrom(s => s.Activity.ActivityLikes))
+               .ForMember(c => c.avatarLetter, c => c.MapFrom(s => s.User.FirstName.Substring(0,1) +s.User.LastName.Substring(0, 1)))
                .ForMember(c => c.Categories, c => c.MapFrom(s => s.Activity.ActivityCategories));
             });
         }
