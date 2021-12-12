@@ -10,6 +10,8 @@ namespace Event.Entities.Concrete
         public string Text { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
+        public Activity Activity { get; set; }
+        public int ActivityId { get; set; }
 
     }
 }
