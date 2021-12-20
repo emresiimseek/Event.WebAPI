@@ -23,11 +23,11 @@ namespace Event.WebAPI.Controllers
             _commentService = commentService;
         }
 
-        [HttpGet("GetByActivity")]
-        public async Task<IActionResult> Get(int activityId)
+        [HttpGet("GetByActivity/{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            var values = _commentService.GetAll(x => x.ActivityId == activityId);
-            return Ok(values);
+            var values = _commentService.GetAll(x => x.ActivityId == id);
+            return Ok(values.Result);
 
         }
 

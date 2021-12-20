@@ -53,13 +53,13 @@ namespace Event.Core.Concrete
             _dbContext.SaveChanges();
         }
 
-        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null, string include = null)
         {
 
             var result = typeof(TEntity).Assembly;
             var result2 = nameof(TEntity);
 
-            return filter == null ? _dbSet : _dbSet.Where(filter).Where(e => (e as Entity).State != EnumState.Deleted);
+            return filter == null ? _dbSet.Include(include) : _dbSet.Where(filter).Include(include);
         }
 
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter = null)
