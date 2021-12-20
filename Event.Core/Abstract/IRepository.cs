@@ -14,6 +14,6 @@ namespace Event.Core.Abstract
         void DeleteById(object EntityId);
         Task<TEntity> GetByIdAsync(int Id);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter=null);
-        IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null);
+        IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null,string include= null);
     }
 }

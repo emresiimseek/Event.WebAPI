@@ -35,7 +35,7 @@ namespace Event.Business.Concete
 
         public async Task<List<Comment>> GetAll(Expression<Func<Comment, bool>> filter = null)
         {
-           return   _commentDal.GetAll(filter).ToList();
+           return   _commentDal.GetAll(filter,"User").ToList();
         }
 
         public Task<Comment> GetAsync(Expression<Func<Comment, bool>> filter = null)
