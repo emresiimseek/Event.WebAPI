@@ -26,7 +26,7 @@ namespace Event.WebAPI.Controllers
         [HttpGet("GetByActivity/{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var values = _commentService.GetAll(x => x.ActivityId == id);
+            var values = _commentService.GetCommentWithReplies(id);
             return Ok(values.Result);
 
         }
@@ -37,16 +37,13 @@ namespace Event.WebAPI.Controllers
             return Created(String.Empty, _commentService.AddAsync(comment));
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("ReplyComment")]
+        public async Task<IActionResult> ReplyComment(Reply reply)
         {
+           return Created(String.Empty,_commentService.ReplyComment(reply)) ;
+
         }
 
-        [HttpPost("Delete")]
-        public async Task<IActionResult> Delete(Comment comment)
-        {
-            _commentService.Delete(comment);
-            return NoContent();
-        }
+
     }
 }

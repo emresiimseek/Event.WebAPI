@@ -12,6 +12,7 @@ namespace Event.Entities.Concrete
         public User User { get; set; }
         public Activity Activity { get; set; }
         public int ActivityId { get; set; }
+        public virtual List<Reply> ReplyComments { get; set; }
 
     }
 }

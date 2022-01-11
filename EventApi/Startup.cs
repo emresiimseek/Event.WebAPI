@@ -76,6 +76,7 @@ namespace EventApi
             services.AddScoped<ICategoryDal, CategoryDal>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<ICommentDal, CommentDal>();
+            services.AddScoped<IRepyDal, ReplyDal>();
 
             services.AddScoped<IActivityLikeDal, ActivityLikeDal>();
             services.AddScoped<ICategoryDal, CategoryDal>();
