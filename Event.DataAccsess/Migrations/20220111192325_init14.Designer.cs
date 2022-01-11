@@ -4,14 +4,16 @@ using Event.DataAccsess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Event.DataAccsess.Migrations
 {
     [DbContext(typeof(EventContext))]
-    partial class EventContextModelSnapshot : ModelSnapshot
+    [Migration("20220111192325_init14")]
+    partial class init14
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,6 +167,9 @@ namespace Event.DataAccsess.Migrations
                     b.Property<int>("ActivityId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
@@ -190,43 +195,26 @@ namespace Event.DataAccsess.Migrations
 
                     b.HasIndex("ActivityId");
 
+                    b.HasIndex("CommentId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Event.Entities.Concrete.Reply", b =>
+            modelBuilder.Entity("Event.Entities.Concrete.Comment_Comment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("CommentParentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CommentId")
+                    b.Property<int>("CommentChildId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
+                    b.HasKey("CommentParentId", "CommentChildId");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
+                    b.HasIndex("CommentChildId");
 
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("ModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentId");
-
-                    b.ToTable("Reply");
+                    b.ToTable("CommentComments");
                 });
 
             modelBuilder.Entity("Event.Entities.Concrete.Role", b =>
@@ -448,6 +436,10 @@ namespace Event.DataAccsess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Event.Entities.Concrete.Comment", null)
+                        .WithMany("ReplyComments")
+                        .HasForeignKey("CommentId");
+
                     b.HasOne("Event.Entities.Concrete.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
@@ -455,11 +447,17 @@ namespace Event.DataAccsess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Event.Entities.Concrete.Reply", b =>
+            modelBuilder.Entity("Event.Entities.Concrete.Comment_Comment", b =>
                 {
-                    b.HasOne("Event.Entities.Concrete.Comment", "Comment")
-                        .WithMany("ReplyComments")
-                        .HasForeignKey("CommentId")
+                    b.HasOne("Event.Entities.Concrete.Comment", "CommentChild")
+                        .WithMany()
+                        .HasForeignKey("CommentChildId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Event.Entities.Concrete.Comment", "CommentParent")
+                        .WithMany()
+                        .HasForeignKey("CommentParentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

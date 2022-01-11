@@ -3,12 +3,10 @@ using Event.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Event.DataAccsess.Abstract
 {
-    public interface ICommentDal : IRepository<Comment>
+    public interface IRepyDal : IRepository<Reply>
     {
-        Task<List<Comment>> GetCommentWithsReplies(int id);
     }
 }
